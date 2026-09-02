@@ -9,6 +9,19 @@ export default function Layout({ children }) {
       <Head>
         <title>{siteMetadata.title}</title>
         <meta name="description" content={siteMetadata.description} />
+
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZVVVXMZWZQ"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-ZVVVXMZWZQ');
+            `,
+          }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/images/adam-nurudini.jpg" />
