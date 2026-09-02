@@ -48,17 +48,18 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setResourcesOpen(!resourcesOpen)}
-                onBlur={() => setTimeout(() => setResourcesOpen(false), 150)}
+                onBlur={() => setTimeout(() => setResourcesOpen(false), 200)}
                 className="flex items-center text-dark-muted hover:text-dark-text transition-colors text-sm gap-1"
               >
                 Resources <FaChevronDown size={10} className={`transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
               </button>
               {resourcesOpen && (
-                <div className="absolute top-full left-0 mt-2 py-2 w-40 bg-dark-card border border-dark-border rounded-md shadow-lg">
+                <div className="absolute top-full left-0 mt-2 py-2 w-40 bg-dark-card border border-dark-border rounded-md shadow-lg z-50">
                   {resourceLinks.map(link => (
                     <Link
                       key={link.href}
                       href={link.href}
+                      onClick={() => setResourcesOpen(false)}
                       className="block px-4 py-2 text-sm text-dark-muted hover:text-accent hover:bg-dark-elevated transition-colors"
                     >
                       {link.label}
