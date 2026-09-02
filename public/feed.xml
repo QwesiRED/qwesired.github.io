@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>QwesiRED</title>
+    <link>https://qwesired.github.io</link>
+    <description>Offensive Security Consultant | AppSec &amp; SecOps Leader</description>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Sep 2026 12:17:10 GMT</lastBuildDate>
+    <atom:link href="https://qwesired.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title><![CDATA[CVE-2026-77915: From Zero to Admin - Unauthenticated Takeover in rConfig Core]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-77915</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-77915</guid>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A CVSS 10.0 vulnerability allowing complete unauthenticated takeover of rConfig instances through a misconfigured registration route.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[CVE-2026-77914: rConfig Core Path Traversal to Full Application Compromise]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-77914</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-77914</guid>
+      <pubDate>Sat, 01 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[How I discovered a critical path traversal vulnerability in rConfig Core that allows any authenticated user to read arbitrary files, including the application secrets.]]></description>
+    </item>
+  </channel>
+</rss>
