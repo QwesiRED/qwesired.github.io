@@ -7,14 +7,17 @@ export default function Search() {
   const searchRef = useRef(null)
 
   useEffect(() => {
-    // Load Pagefind
+    // Load Pagefind dynamically at runtime
     async function loadPagefind() {
       if (typeof window !== 'undefined' && window.pagefind === undefined) {
         try {
-          window.pagefind = await import('/pagefind/pagefind.js')
+          // Dynamic import using URL to avoid webpack bundling
+          const pagefindPath = '/pagefind/pagefind.js'
+          const module = await import(/* webpackIgnore: true */ pagefindPath)
+          window.pagefind = module
           await window.pagefind.init()
         } catch (e) {
-          console.log('Pagefind not available in dev mode')
+          console.log('Pagefind not available - run npm run build first')
         }
       }
     }
