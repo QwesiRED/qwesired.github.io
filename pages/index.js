@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { FaShieldAlt, FaBug, FaCode, FaArrowRight, FaSearch, FaBriefcase, FaFileCode, FaCertificate, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import { FaShieldAlt, FaBug, FaCode, FaArrowRight, FaSearch, FaBriefcase, FaFileCode, FaCertificate, FaTwitter } from 'react-icons/fa'
 import siteMetadata from '../data/siteMetadata'
 import { getSortedPostsData } from '../lib/posts'
 import BlogPostCard from '../components/BlogPostCard'
@@ -173,20 +173,20 @@ export default function Home({ recentPosts }) {
         </div>
       </section>
 
-      {/* Connect CTA */}
+      {/* Speaking CTA */}
       <section className="py-10 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="card p-6 border-accent/20 bg-accent/5 text-center">
-            <h2 className="text-lg font-semibold text-dark-text mb-2 font-sans">Let's Connect</h2>
+            <h2 className="text-lg font-semibold text-dark-text mb-2 font-sans">Speaking & Community</h2>
             <p className="text-dark-muted text-sm mb-4 max-w-xl mx-auto">
-              Open to speaking engagements, security community collaboration, and knowledge sharing.
+              Available for conference talks, workshops, and security community events. Topics include vulnerability research, red teaming, and building security programs.
             </p>
             <div className="flex justify-center gap-3">
-              <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-primary flex items-center gap-2">
-                <FaLinkedin size={14} /> Connect on LinkedIn
-              </a>
+              <Link href="/talks" className="btn btn-primary">
+                View Past Talks
+              </Link>
               <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-outline flex items-center gap-2">
-                <FaTwitter size={14} /> Follow on X
+                <FaTwitter size={14} /> Follow for Updates
               </a>
             </div>
           </div>
