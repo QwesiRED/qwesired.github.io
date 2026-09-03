@@ -63,7 +63,7 @@ export default function Home({ recentPosts }) {
 
               {/* Short Bio */}
               <p className="text-dark-muted leading-relaxed mb-4 text-sm">
-                10+ years in security — built a bank's SOC from scratch, now breaking into Australia's critical enterprises at Sekuro. CVE author. Full-spectrum perspective.
+                10+ years in security - built a bank's SOC from scratch, now simulating adversaries to protect Australia's most critical enterprises at Sekuro. CVE author. Full-spectrum perspective.
               </p>
 
               {/* Certifications */}
