@@ -5,13 +5,13 @@
     <link>https://qwesired.github.io</link>
     <description>Offensive Security Consultant | AppSec &amp; SecOps Leader</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Sep 2026 06:14:04 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 03 Sep 2026 06:17:54 GMT</lastBuildDate>
     <atom:link href="https://qwesired.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     
     <item>
-      <title><![CDATA[ClipBucket V5: Unauthenticated RCE via Web Installer Command Injection]]></title>
-      <link>https://qwesired.github.io/blog/clipbucket-installer-rce</link>
-      <guid>https://qwesired.github.io/blog/clipbucket-installer-rce</guid>
+      <title><![CDATA[CVE-2026-80138: ClipBucket V5 Unauthenticated RCE via Web Installer Command Injection]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-80138</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-80138</guid>
       <pubDate>Thu, 03 Sep 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[How I discovered a critical unauthenticated remote code execution vulnerability in ClipBucket V5 web installer that allows complete server compromise with a single HTTP request.]]></description>
     </item>
