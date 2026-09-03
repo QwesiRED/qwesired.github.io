@@ -38,12 +38,24 @@ export default function BlogPost({ post }) {
     <>
       <Head>
         <title>{post.title} | {siteMetadata.title}</title>
-        <meta name="description" content={post.description || post.title} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.description || post.title} />
-        <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@Qwesi_RED" />
+        <meta name="description" content={post.description || post.title} key="description" />
+
+        {/* Open Graph - override layout defaults */}
+        <meta property="og:type" content="article" key="og:type" />
+        <meta property="og:title" content={post.title} key="og:title" />
+        <meta property="og:description" content={post.description || post.title} key="og:description" />
+        <meta property="og:url" content={shareUrl} key="og:url" />
+        <meta property="og:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} key="og:image" />
+        <meta property="og:site_name" content={siteMetadata.title} key="og:site_name" />
+        <meta property="article:author" content={siteMetadata.author} />
+        <meta property="article:published_time" content={post.date} />
+
+        {/* Twitter Card - override layout defaults */}
+        <meta name="twitter:card" content="summary_large_image" key="twitter:card" />
+        <meta name="twitter:site" content="@Qwesi_RED" key="twitter:site" />
+        <meta name="twitter:title" content={post.title} key="twitter:title" />
+        <meta name="twitter:description" content={post.description || post.title} key="twitter:description" />
+        <meta name="twitter:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} key="twitter:image" />
       </Head>
 
       <article className="max-w-3xl mx-auto px-4 py-12">

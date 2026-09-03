@@ -27,20 +27,20 @@ export default function Layout({ children }) {
         <link rel="apple-touch-icon" href="/images/adam-nurudini.jpg" />
         <meta name="theme-color" content="#0d1117" />
 
-        {/* Open Graph / Social Sharing */}
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content={siteMetadata.title} />
-        <meta property="og:title" content={`${siteMetadata.author} | ${siteMetadata.description}`} />
-        <meta property="og:description" content={siteMetadata.profile.summary} />
-        <meta property="og:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} />
-        <meta property="og:url" content={siteMetadata.siteUrl} />
+        {/* Open Graph / Social Sharing - use key props so pages can override */}
+        <meta property="og:type" content="website" key="og:type" />
+        <meta property="og:site_name" content={siteMetadata.title} key="og:site_name" />
+        <meta property="og:title" content={`${siteMetadata.author} | ${siteMetadata.description}`} key="og:title" />
+        <meta property="og:description" content={siteMetadata.profile.summary} key="og:description" />
+        <meta property="og:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} key="og:image" />
+        <meta property="og:url" content={siteMetadata.siteUrl} key="og:url" />
 
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@Qwesi_RED" />
-        <meta name="twitter:title" content={`${siteMetadata.author} | ${siteMetadata.description}`} />
-        <meta name="twitter:description" content={siteMetadata.profile.summary} />
-        <meta name="twitter:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} />
+        {/* Twitter Card - use key props so pages can override */}
+        <meta name="twitter:card" content="summary" key="twitter:card" />
+        <meta name="twitter:site" content="@Qwesi_RED" key="twitter:site" />
+        <meta name="twitter:title" content={`${siteMetadata.author} | ${siteMetadata.description}`} key="twitter:title" />
+        <meta name="twitter:description" content={siteMetadata.profile.summary} key="twitter:description" />
+        <meta name="twitter:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} key="twitter:image" />
 
         {/* Additional SEO */}
         <meta name="author" content={siteMetadata.author} />
