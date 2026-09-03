@@ -32,7 +32,6 @@ export default function Layout({ children }) {
         <meta property="og:site_name" content={siteMetadata.title} key="og:site_name" />
         <meta property="og:title" content={`${siteMetadata.author} | ${siteMetadata.description}`} key="og:title" />
         <meta property="og:description" content={siteMetadata.profile.summary} key="og:description" />
-        <meta property="og:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} key="og:image" />
         <meta property="og:url" content={siteMetadata.siteUrl} key="og:url" />
 
         {/* Twitter Card - use key props so pages can override */}
@@ -40,7 +39,6 @@ export default function Layout({ children }) {
         <meta name="twitter:site" content="@Qwesi_RED" key="twitter:site" />
         <meta name="twitter:title" content={`${siteMetadata.author} | ${siteMetadata.description}`} key="twitter:title" />
         <meta name="twitter:description" content={siteMetadata.profile.summary} key="twitter:description" />
-        <meta name="twitter:image" content={`${siteMetadata.siteUrl}/images/adam-nurudini.jpg`} key="twitter:image" />
 
         {/* Additional SEO */}
         <meta name="author" content={siteMetadata.author} />
