@@ -1,5 +1,20 @@
 # QwesiRED Blog - TODO
 
+## Completed
+
+- [x] Build professional security blog inspired by xbz0n.sh
+- [x] Add certification badges with verification links (Credential.net, Credly)
+- [x] Add real profile photo from LinkedIn
+- [x] Add favicon (Q logo)
+- [x] Add Open Graph and Twitter Card meta tags
+- [x] Deploy to GitHub Pages (https://qwesired.github.io)
+- [x] Set up GitHub Actions for automated deployment
+- [x] Add Google Analytics (G-ZVVVXMZWZQ)
+- [x] Fix font size for better readability (16px)
+- [x] Fix dropdown navigation (Resources menu)
+- [x] Fix blog post OG titles for LinkedIn sharing
+- [x] Remove photo from blog post social shares
+
 ## Content Tasks
 
 ### Blog Posts
@@ -29,7 +44,7 @@
 - [ ] Add related posts section at end of articles
 
 ### SEO & Analytics
-- [ ] Set up Google Analytics or Plausible
+- [x] Set up Google Analytics
 - [ ] Add sitemap.xml generation
 - [ ] Submit to Google Search Console
 
@@ -39,12 +54,11 @@
 - [ ] Consider adding service worker for offline support
 
 ## Deployment Checklist
-- [ ] Run `npm run build` to verify production build
-- [ ] Test all pages in production mode
-- [ ] Push to GitHub
-- [ ] Enable GitHub Pages (Settings > Pages > Source: gh-pages branch)
-- [ ] Verify custom domain (if using one)
-- [ ] Test Open Graph previews on LinkedIn/Twitter
+- [x] Run `npm run build` to verify production build
+- [x] Test all pages in production mode
+- [x] Push to GitHub
+- [x] Enable GitHub Pages via GitHub Actions
+- [x] Test Open Graph previews on LinkedIn/Twitter
 
 ---
-Last updated: 2026-09-02
+Last updated: 2026-09-03
