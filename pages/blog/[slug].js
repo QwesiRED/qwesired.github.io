@@ -221,6 +221,33 @@ export default function BlogPost({ post, relatedPosts }) {
               </div>
             )}
 
+            {/* More Posts - prioritized for reader engagement */}
+            {relatedPosts.length > 0 && (
+              <div className="card p-5">
+                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">More Posts</h3>
+                <div className="space-y-4">
+                  {relatedPosts.map(relPost => (
+                    <Link
+                      key={relPost.slug}
+                      href={`/blog/${relPost.slug}`}
+                      className="block group"
+                    >
+                      <h4 className="text-sm text-dark-text group-hover:text-accent transition-colors font-medium line-clamp-2 mb-1">
+                        {relPost.title}
+                      </h4>
+                      <span className="text-xs text-dark-faded">{format(new Date(relPost.date), 'MMM d, yyyy')}</span>
+                    </Link>
+                  ))}
+                </div>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center text-accent hover:text-accent-600 text-xs mt-4 gap-1"
+                >
+                  View all posts <FaArrowRight size={10} />
+                </Link>
+              </div>
+            )}
+
             {/* Share */}
             <div className="card p-5">
               <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Share</h3>
@@ -264,33 +291,6 @@ export default function BlogPost({ post, relatedPosts }) {
                 Offensive Security Consultant specializing in vulnerability research and penetration testing.
               </p>
             </div>
-
-            {/* Related Posts */}
-            {relatedPosts.length > 0 && (
-              <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">More Posts</h3>
-                <div className="space-y-4">
-                  {relatedPosts.map(relPost => (
-                    <Link
-                      key={relPost.slug}
-                      href={`/blog/${relPost.slug}`}
-                      className="block group"
-                    >
-                      <h4 className="text-sm text-dark-text group-hover:text-accent transition-colors font-medium line-clamp-2 mb-1">
-                        {relPost.title}
-                      </h4>
-                      <span className="text-xs text-dark-faded">{format(new Date(relPost.date), 'MMM d, yyyy')}</span>
-                    </Link>
-                  ))}
-                </div>
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center text-accent hover:text-accent-600 text-xs mt-4 gap-1"
-                >
-                  View all posts <FaArrowRight size={10} />
-                </Link>
-              </div>
-            )}
           </div>
         </aside>
         </div>
