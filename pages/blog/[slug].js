@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { FaArrowLeft, FaTwitter, FaLinkedin, FaCalendar, FaUser, FaArrowRight } from 'react-icons/fa'
+import { FaArrowLeft, FaTwitter, FaLinkedin, FaCalendar, FaUser, FaArrowRight, FaClock, FaListUl } from 'react-icons/fa'
 import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts'
 import siteMetadata from '../../data/siteMetadata'
 
@@ -13,6 +13,27 @@ export async function getStaticPaths() {
   }
 }
 
+function extractTOC(html) {
+  const headingRegex = /<h([2-3])[^>]*>(.+?)<\/h[2-3]>/gi
+  const toc = []
+  let match
+  while ((match = headingRegex.exec(html)) !== null) {
+    const level = parseInt(match[1])
+    const text = match[2].replace(/<[^>]+>/g, '')
+    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    toc.push({ level, text, id })
+  }
+  return toc
+}
+
+function addHeadingIds(html) {
+  return html.replace(/<h([2-3])([^>]*)>(.+?)<\/h([2-3])>/gi, (match, level, attrs, content, closeLevel) => {
+    const text = content.replace(/<[^>]+>/g, '')
+    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    return `<h${level}${attrs} id="${id}">${content}</h${closeLevel}>`
+  })
+}
+
 export async function getStaticProps({ params }) {
   const postData = await getPostData(params.slug)
   const allPosts = getSortedPostsData()
@@ -22,10 +43,15 @@ export async function getStaticProps({ params }) {
     .filter(p => p.slug !== params.slug)
     .slice(0, 5)
 
+  // Extract TOC and add IDs to headings
+  const toc = extractTOC(postData.contentHtml)
+  const contentHtml = addHeadingIds(postData.contentHtml)
+
   return {
     props: {
-      post: postData,
-      relatedPosts
+      post: { ...postData, contentHtml },
+      relatedPosts,
+      toc
     }
   }
 }
@@ -42,7 +68,7 @@ const tagColorMap = {
   'RCE': 'tag-red',
 }
 
-export default function BlogPost({ post, relatedPosts }) {
+export default function BlogPost({ post, relatedPosts, toc }) {
   const shareUrl = `${siteMetadata.siteUrl}/blog/${post.slug}`
   const ogImage = post.image ? `${siteMetadata.siteUrl}${post.image}` : null
 
@@ -100,11 +126,16 @@ export default function BlogPost({ post, relatedPosts }) {
               {post.title}
             </h1>
 
-            {/* Mobile/Tablet: Show date and author inline */}
+            {/* Mobile/Tablet: Show date, author and reading time inline */}
             <div className="xl:hidden flex flex-wrap items-center gap-3 text-dark-muted text-sm mb-4">
               <span className="flex items-center gap-1.5">
                 <FaCalendar size={12} className="text-dark-faded" />
                 {format(new Date(post.date), 'MMMM d, yyyy')}
+              </span>
+              <span className="text-dark-faded">•</span>
+              <span className="flex items-center gap-1.5">
+                <FaClock size={12} className="text-dark-faded" />
+                {post.readingTime} min read
               </span>
               <span className="text-dark-faded">•</span>
               <span>By {siteMetadata.author}</span>
@@ -201,11 +232,37 @@ export default function BlogPost({ post, relatedPosts }) {
                   <span>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-dark-muted">
+                  <FaClock size={12} className="text-dark-faded" />
+                  <span>{post.readingTime} min read</span>
+                </div>
+                <div className="flex items-center gap-2 text-dark-muted">
                   <FaUser size={12} className="text-dark-faded" />
                   <span>{siteMetadata.author}</span>
                 </div>
               </div>
             </div>
+
+            {/* Table of Contents */}
+            {toc.length > 2 && (
+              <div className="card p-5">
+                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <FaListUl size={10} /> Contents
+                </h3>
+                <nav className="space-y-2">
+                  {toc.map((item, idx) => (
+                    <a
+                      key={idx}
+                      href={`#${item.id}`}
+                      className={`block text-xs text-dark-muted hover:text-accent transition-colors line-clamp-1 ${
+                        item.level === 3 ? 'pl-3 text-dark-faded' : ''
+                      }`}
+                    >
+                      {item.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )}
 
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (

@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import BackToTop from './BackToTop'
 import siteMetadata from '../data/siteMetadata'
 
 export default function Layout({ children }) {
@@ -50,6 +51,7 @@ export default function Layout({ children }) {
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
+        <BackToTop />
       </div>
     </>
   )

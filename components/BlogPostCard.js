@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { format } from 'date-fns'
+import { FaClock } from 'react-icons/fa'
 
 const tagColors = {
   'CVE': 'tag-red',
@@ -25,8 +26,14 @@ export default function BlogPostCard({ post }) {
                 {tag}
               </span>
             ))}
-            <span className="text-dark-faded text-xs ml-auto">
-              {format(new Date(post.date), 'MMM d, yyyy')}
+            <span className="text-dark-faded text-xs ml-auto flex items-center gap-3">
+              {post.readingTime && (
+                <span className="flex items-center gap-1">
+                  <FaClock size={10} />
+                  {post.readingTime} min
+                </span>
+              )}
+              <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
             </span>
           </div>
         )}
