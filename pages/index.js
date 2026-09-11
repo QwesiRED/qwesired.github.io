@@ -11,7 +11,8 @@ export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
   return {
     props: {
-      recentPosts: allPostsData.slice(0, 3)
+      recentPosts: allPostsData.slice(0, 3),
+      totalPosts: allPostsData.length
     }
   }
 }
@@ -25,7 +26,7 @@ const expertiseIcons = {
   briefcase: FaBriefcase
 }
 
-export default function Home({ recentPosts }) {
+export default function Home({ recentPosts, totalPosts }) {
   return (
     <>
       <Head>
@@ -135,14 +136,16 @@ export default function Home({ recentPosts }) {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <FaBug className="text-accent" />
-              <h2 className="text-lg font-semibold text-dark-text font-sans">CVE Discoveries</h2>
+              <h2 className="text-lg font-semibold text-dark-text font-sans">
+                CVE Discoveries <span className="text-dark-faded font-normal">({siteMetadata.cves.length})</span>
+              </h2>
             </div>
             <Link href="/cves" className="text-accent hover:text-accent-600 text-sm flex items-center gap-1">
               View all <FaArrowRight size={12} />
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {siteMetadata.cves.map(cve => (
+            {siteMetadata.cves.slice(0, 3).map(cve => (
               <CVECard key={cve.id} cve={cve} />
             ))}
           </div>
@@ -153,7 +156,9 @@ export default function Home({ recentPosts }) {
       <section className="py-10 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-dark-text font-sans">Latest Research</h2>
+            <h2 className="text-lg font-semibold text-dark-text font-sans">
+              Latest Research <span className="text-dark-faded font-normal">({totalPosts})</span>
+            </h2>
             <Link href="/blog" className="text-accent hover:text-accent-600 text-sm flex items-center gap-1">
               View all posts <FaArrowRight size={12} />
             </Link>
