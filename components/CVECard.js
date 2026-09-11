@@ -29,18 +29,18 @@ export default function CVECard({ cve }) {
       </h3>
 
       {/* Meta info */}
-      <div className="space-y-1.5 text-xs mb-4">
+      <div className="space-y-1.5 text-sm mb-4">
         <div className="flex">
-          <span className="text-dark-faded w-16">Product:</span>
+          <span className="text-dark-faded w-20">Product:</span>
           <span className="text-dark-muted">{cve.product}</span>
         </div>
         <div className="flex">
-          <span className="text-dark-faded w-16">Versions:</span>
+          <span className="text-dark-faded w-20">Versions:</span>
           <span className="text-dark-muted">{cve.versions}</span>
         </div>
         {cve.cvss && (
           <div className="flex">
-            <span className="text-dark-faded w-16">CVSS:</span>
+            <span className="text-dark-faded w-20">CVSS:</span>
             <span className={`font-mono font-bold ${cvssColor}`}>{cve.cvss}</span>
           </div>
         )}

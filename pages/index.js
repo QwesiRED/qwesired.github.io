@@ -58,12 +58,12 @@ export default function Home({ recentPosts, totalPosts }) {
               </div>
 
               {/* Tagline */}
-              <p className="text-dark-text text-sm italic mb-3">
+              <p className="text-dark-text text-base italic mb-3">
                 {siteMetadata.profile.tagline}
               </p>
 
               {/* Short Bio */}
-              <p className="text-dark-muted leading-relaxed mb-4 text-sm">
+              <p className="text-dark-muted leading-relaxed mb-4 text-base">
                 10+ years in security - built a bank's SOC from scratch, now simulating adversaries to protect Australia's most critical enterprises at Sekuro. CVE author. Full-spectrum perspective.
               </p>
 
@@ -121,8 +121,8 @@ export default function Home({ recentPosts, totalPosts }) {
               return (
                 <div key={idx} className="card p-5">
                   <Icon className="text-accent text-lg mb-3" />
-                  <h3 className="text-sm font-semibold text-dark-text mb-2 font-sans">{item.title}</h3>
-                  <p className="text-dark-muted text-xs leading-relaxed">{item.description}</p>
+                  <h3 className="text-base font-semibold text-dark-text mb-2 font-sans">{item.title}</h3>
+                  <p className="text-dark-muted text-sm leading-relaxed">{item.description}</p>
                 </div>
               )
             })}
@@ -182,8 +182,8 @@ export default function Home({ recentPosts, totalPosts }) {
       <section className="py-10 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="card p-6 border-accent/20 bg-accent/5 text-center">
-            <h2 className="text-lg font-semibold text-dark-text mb-2 font-sans">Speaking & Community</h2>
-            <p className="text-dark-muted text-sm mb-4 max-w-xl mx-auto">
+            <h2 className="text-xl font-semibold text-dark-text mb-3 font-sans">Speaking & Community</h2>
+            <p className="text-dark-muted text-base mb-4 max-w-xl mx-auto leading-relaxed">
               Available for conference talks, workshops, and security community events. Topics include vulnerability research, red teaming, and building security programs.
             </p>
             <div className="flex justify-center gap-3">
