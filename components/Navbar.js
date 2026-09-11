@@ -25,7 +25,12 @@ export default function Navbar() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link href="/" className="flex items-center font-mono text-sm group">
+          <Link href="/" className="flex items-center font-mono text-sm group gap-2">
+            <img
+              src="/images/icon-32.png"
+              alt="QwesiRED"
+              className="w-6 h-6 rounded"
+            />
             <span className="text-accent">qwesired</span>
             <span className="text-dark-muted">@sh:</span>
             <span className="text-dark-text">~</span>
