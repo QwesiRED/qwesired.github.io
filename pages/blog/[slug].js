@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { FaArrowLeft, FaTwitter, FaLinkedin, FaCalendar, FaUser, FaClock } from 'react-icons/fa'
-import { getAllPostSlugs, getPostData } from '../../lib/posts'
+import { FaArrowLeft, FaTwitter, FaLinkedin, FaCalendar, FaUser, FaArrowRight } from 'react-icons/fa'
+import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts'
 import siteMetadata from '../../data/siteMetadata'
 
 export async function getStaticPaths() {
@@ -15,9 +15,17 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const postData = await getPostData(params.slug)
+  const allPosts = getSortedPostsData()
+
+  // Get related posts (exclude current post, take up to 5)
+  const relatedPosts = allPosts
+    .filter(p => p.slug !== params.slug)
+    .slice(0, 5)
+
   return {
     props: {
-      post: postData
+      post: postData,
+      relatedPosts
     }
   }
 }
@@ -34,7 +42,7 @@ const tagColorMap = {
   'RCE': 'tag-red',
 }
 
-export default function BlogPost({ post }) {
+export default function BlogPost({ post, relatedPosts }) {
   const shareUrl = `${siteMetadata.siteUrl}/blog/${post.slug}`
   const ogImage = post.image ? `${siteMetadata.siteUrl}${post.image}` : null
 
@@ -64,181 +72,226 @@ export default function BlogPost({ post }) {
         {ogImage && <meta name="twitter:image" content={ogImage} key="twitter:image" />}
       </Head>
 
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* Back Link */}
-        <Link href="/blog" className="inline-flex items-center text-dark-muted hover:text-accent transition-colors text-sm mb-8">
-          <FaArrowLeft className="mr-2" size={12} />
-          Back to Blog
-        </Link>
+      {/* Wide container for sidebar layout */}
+      <div className="xl:flex xl:justify-center xl:gap-8 px-4 py-12">
+        {/* Main Content - keeps original max-w-3xl width */}
+        <article className="max-w-3xl mx-auto xl:mx-0 xl:flex-shrink-0">
+          {/* Back Link */}
+          <Link href="/blog" className="inline-flex items-center text-dark-muted hover:text-accent transition-colors text-sm mb-8">
+            <FaArrowLeft className="mr-2" size={12} />
+            Back to Blog
+          </Link>
 
-        <div className="lg:flex lg:gap-8">
-          {/* Main Content */}
-          <article className="lg:flex-1 min-w-0">
-            {/* Hero Image */}
-            {post.image && (
-              <div className="mb-8 rounded-lg overflow-hidden border border-dark-border-subtle">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-auto"
-                />
+          {/* Hero Image */}
+          {post.image && (
+            <div className="mb-8 rounded-lg overflow-hidden border border-dark-border-subtle">
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-auto"
+              />
+            </div>
+          )}
+
+          {/* Header */}
+          <header className="mb-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-dark-text mb-4 font-sans leading-tight">
+              {post.title}
+            </h1>
+
+            {/* Mobile/Tablet: Show date and author inline */}
+            <div className="xl:hidden flex flex-wrap items-center gap-3 text-dark-muted text-sm mb-4">
+              <span className="flex items-center gap-1.5">
+                <FaCalendar size={12} className="text-dark-faded" />
+                {format(new Date(post.date), 'MMMM d, yyyy')}
+              </span>
+              <span className="text-dark-faded">•</span>
+              <span>By {siteMetadata.author}</span>
+            </div>
+
+            {/* Mobile/Tablet: Show tags */}
+            {post.tags && (
+              <div className="xl:hidden flex flex-wrap gap-2">
+                {post.tags.slice(0, 4).map(tag => (
+                  <span key={tag} className={`tag ${tagColorMap[tag] || ''}`}>
+                    {tag}
+                  </span>
+                ))}
+                {post.tags.length > 4 && (
+                  <span className="text-dark-faded text-xs">+{post.tags.length - 4} more</span>
+                )}
               </div>
             )}
+          </header>
 
-            {/* Header */}
-            <header className="mb-8">
-              <h1 className="text-2xl md:text-3xl font-bold text-dark-text mb-4 font-sans leading-tight">
-                {post.title}
-              </h1>
+          {/* Content */}
+          <div
+            className="prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+          />
 
-              {/* Mobile: Show date and author inline */}
-              <div className="lg:hidden flex flex-wrap items-center gap-3 text-dark-muted text-sm mb-4">
-                <span className="flex items-center gap-1.5">
-                  <FaCalendar size={12} className="text-dark-faded" />
-                  {format(new Date(post.date), 'MMMM d, yyyy')}
-                </span>
-                <span className="text-dark-faded">•</span>
-                <span>By {siteMetadata.author}</span>
+          {/* Mobile/Tablet: Share and Author */}
+          <div className="xl:hidden mt-12 pt-8 border-t border-dark-border-subtle">
+            <h3 className="text-sm font-semibold text-dark-text mb-4 font-sans">Share this post</h3>
+            <div className="flex gap-3 mb-8">
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}&via=Qwesi_RED`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-3 py-1.5 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-1.5"
+              >
+                <FaTwitter size={12} />
+                Twitter
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-3 py-1.5 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-1.5"
+              >
+                <FaLinkedin size={12} />
+                LinkedIn
+              </a>
+            </div>
+
+            {/* Author Card */}
+            <div className="card p-4 flex items-center gap-4 mb-8">
+              <img
+                src="/images/adam-nurudini.jpg"
+                alt={siteMetadata.author}
+                className="w-12 h-12 rounded-full object-cover border border-accent/30"
+              />
+              <div>
+                <h4 className="text-sm font-semibold text-dark-text font-sans">{siteMetadata.author}</h4>
+                <p className="text-dark-muted text-xs">Offensive Security Consultant | CVE Author</p>
               </div>
+            </div>
 
-              {/* Mobile: Show tags */}
-              {post.tags && (
-                <div className="lg:hidden flex flex-wrap gap-2">
-                  {post.tags.slice(0, 4).map(tag => (
+            {/* Mobile: Related Posts */}
+            {relatedPosts.length > 0 && (
+              <div>
+                <h3 className="text-sm font-semibold text-dark-text mb-4 font-sans">More Posts</h3>
+                <div className="space-y-3">
+                  {relatedPosts.slice(0, 3).map(relPost => (
+                    <Link
+                      key={relPost.slug}
+                      href={`/blog/${relPost.slug}`}
+                      className="block card p-3 hover:border-accent transition-colors"
+                    >
+                      <h4 className="text-sm text-dark-text font-medium line-clamp-2 mb-1">{relPost.title}</h4>
+                      <span className="text-xs text-dark-faded">{format(new Date(relPost.date), 'MMM d, yyyy')}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </article>
+
+        {/* Desktop Sidebar - only visible on xl screens, uses extra space */}
+        <aside className="hidden xl:block w-72 flex-shrink-0">
+          <div className="sticky top-20 space-y-6">
+            {/* Post Meta */}
+            <div className="card p-5">
+              <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Post Info</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-2 text-dark-muted">
+                  <FaCalendar size={12} className="text-dark-faded" />
+                  <span>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
+                </div>
+                <div className="flex items-center gap-2 text-dark-muted">
+                  <FaUser size={12} className="text-dark-faded" />
+                  <span>{siteMetadata.author}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="card p-5">
+                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Topics</h3>
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map(tag => (
                     <span key={tag} className={`tag ${tagColorMap[tag] || ''}`}>
                       {tag}
                     </span>
                   ))}
-                  {post.tags.length > 4 && (
-                    <span className="text-dark-faded text-xs">+{post.tags.length - 4} more</span>
-                  )}
                 </div>
-              )}
-            </header>
+              </div>
+            )}
 
-            {/* Content */}
-            <div
-              className="prose prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-            />
-
-            {/* Mobile: Share and Author */}
-            <div className="lg:hidden mt-12 pt-8 border-t border-dark-border-subtle">
-              <h3 className="text-sm font-semibold text-dark-text mb-4 font-sans">Share this post</h3>
-              <div className="flex gap-3 mb-8">
+            {/* Share */}
+            <div className="card p-5">
+              <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Share</h3>
+              <div className="flex flex-col gap-2">
                 <a
                   href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}&via=Qwesi_RED`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-1.5"
+                  className="inline-flex items-center px-3 py-2 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-2 justify-center"
                 >
-                  <FaTwitter size={12} />
-                  Twitter
+                  <FaTwitter size={14} />
+                  Share on Twitter
                 </a>
                 <a
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-1.5"
+                  className="inline-flex items-center px-3 py-2 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-2 justify-center"
                 >
-                  <FaLinkedin size={12} />
-                  LinkedIn
+                  <FaLinkedin size={14} />
+                  Share on LinkedIn
                 </a>
               </div>
+            </div>
 
-              {/* Author Card */}
-              <div className="card p-4 flex items-center gap-4">
+            {/* Author */}
+            <div className="card p-5">
+              <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Author</h3>
+              <div className="flex items-center gap-3">
                 <img
                   src="/images/adam-nurudini.jpg"
                   alt={siteMetadata.author}
-                  className="w-12 h-12 rounded-full object-cover border border-accent/30"
+                  className="w-10 h-10 rounded-full object-cover border border-accent/30"
                 />
                 <div>
                   <h4 className="text-sm font-semibold text-dark-text font-sans">{siteMetadata.author}</h4>
-                  <p className="text-dark-muted text-xs">Offensive Security Consultant | CVE Author</p>
+                  <p className="text-dark-faded text-xs">CVE Author</p>
                 </div>
               </div>
+              <p className="text-dark-muted text-xs mt-3 leading-relaxed">
+                Offensive Security Consultant specializing in vulnerability research and penetration testing.
+              </p>
             </div>
-          </article>
 
-          {/* Desktop Sidebar */}
-          <aside className="hidden lg:block lg:w-72 lg:flex-shrink-0">
-            <div className="sticky top-20 space-y-6">
-              {/* Post Meta */}
+            {/* Related Posts */}
+            {relatedPosts.length > 0 && (
               <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Post Info</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-2 text-dark-muted">
-                    <FaCalendar size={12} className="text-dark-faded" />
-                    <span>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-dark-muted">
-                    <FaUser size={12} className="text-dark-faded" />
-                    <span>{siteMetadata.author}</span>
-                  </div>
+                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">More Posts</h3>
+                <div className="space-y-4">
+                  {relatedPosts.map(relPost => (
+                    <Link
+                      key={relPost.slug}
+                      href={`/blog/${relPost.slug}`}
+                      className="block group"
+                    >
+                      <h4 className="text-sm text-dark-text group-hover:text-accent transition-colors font-medium line-clamp-2 mb-1">
+                        {relPost.title}
+                      </h4>
+                      <span className="text-xs text-dark-faded">{format(new Date(relPost.date), 'MMM d, yyyy')}</span>
+                    </Link>
+                  ))}
                 </div>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center text-accent hover:text-accent-600 text-xs mt-4 gap-1"
+                >
+                  View all posts <FaArrowRight size={10} />
+                </Link>
               </div>
-
-              {/* Tags */}
-              {post.tags && post.tags.length > 0 && (
-                <div className="card p-5">
-                  <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Topics</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map(tag => (
-                      <span key={tag} className={`tag ${tagColorMap[tag] || ''}`}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Share */}
-              <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Share</h3>
-                <div className="flex flex-col gap-2">
-                  <a
-                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}&via=Qwesi_RED`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-3 py-2 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-2 justify-center"
-                  >
-                    <FaTwitter size={14} />
-                    Share on Twitter
-                  </a>
-                  <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-3 py-2 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-2 justify-center"
-                  >
-                    <FaLinkedin size={14} />
-                    Share on LinkedIn
-                  </a>
-                </div>
-              </div>
-
-              {/* Author */}
-              <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Author</h3>
-                <div className="flex items-center gap-3">
-                  <img
-                    src="/images/adam-nurudini.jpg"
-                    alt={siteMetadata.author}
-                    className="w-10 h-10 rounded-full object-cover border border-accent/30"
-                  />
-                  <div>
-                    <h4 className="text-sm font-semibold text-dark-text font-sans">{siteMetadata.author}</h4>
-                    <p className="text-dark-faded text-xs">CVE Author</p>
-                  </div>
-                </div>
-                <p className="text-dark-muted text-xs mt-3 leading-relaxed">
-                  Offensive Security Consultant specializing in vulnerability research and penetration testing.
-                </p>
-              </div>
-            </div>
-          </aside>
-        </div>
+            )}
+          </div>
+        </aside>
       </div>
     </>
   )
