@@ -25,7 +25,7 @@ export default function About() {
 
       {/* Hero Header */}
       <section className="py-16 px-4 border-b border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Profile Info */}
             <div className="flex-1">
@@ -93,7 +93,7 @@ export default function About() {
 
       {/* Highlights */}
       <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-lg font-semibold text-dark-text mb-6 font-sans flex items-center gap-2">
             <span className="text-accent">▸</span> Career Highlights
           </h2>
@@ -110,7 +110,7 @@ export default function About() {
 
       {/* Experience Timeline */}
       <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-lg font-semibold text-dark-text mb-8 font-sans flex items-center gap-2">
             <FaBriefcase className="text-accent" size={14} /> Professional Experience
           </h2>
@@ -148,7 +148,7 @@ export default function About() {
 
       {/* Certifications */}
       <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-lg font-semibold text-dark-text font-sans flex items-center gap-2">
               <FaCertificate className="text-accent" size={14} /> Certifications
@@ -191,7 +191,7 @@ export default function About() {
 
       {/* Technologies */}
       <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-lg font-semibold text-dark-text mb-8 font-sans flex items-center gap-2">
             <FaCode className="text-accent" size={14} /> Technologies & Tools
           </h2>
@@ -214,7 +214,7 @@ export default function About() {
 
       {/* Speaking */}
       <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-lg font-semibold text-dark-text mb-8 font-sans flex items-center gap-2">
             <FaMicrophone className="text-accent" size={14} /> Speaking & Community
           </h2>
@@ -231,7 +231,7 @@ export default function About() {
 
       {/* CVE CTA */}
       <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="card p-6 border-accent/20 bg-accent-glow/30">
             <h2 className="text-lg font-semibold text-dark-text mb-2 font-sans">Security Research</h2>
             <p className="text-dark-muted text-sm mb-4">
@@ -247,7 +247,7 @@ export default function About() {
 
       {/* Contact CTA */}
       <section className="py-16 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-xl font-semibold text-dark-text mb-3 font-sans">Let's Connect</h2>
           <p className="text-dark-muted text-sm mb-6 max-w-lg mx-auto">
             Interested in security consulting, penetration testing, or vulnerability research collaboration?

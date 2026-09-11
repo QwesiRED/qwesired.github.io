@@ -143,24 +143,14 @@ const siteMetadata = {
 
   expertise: [
     {
-      title: 'AppSec',
-      description: 'Web, Mobile, and API security assessments. Finding vulnerabilities in application logic, authentication, and data handling across platforms.',
+      title: 'Penetration Testing',
+      description: 'Internal, external, and Active Directory assessments. Phishing simulations to test human security awareness and response.',
+      icon: 'target'
+    },
+    {
+      title: 'Application Security',
+      description: 'Web, mobile, and API security assessments. Finding vulnerabilities in application logic, authentication, and data handling.',
       icon: 'code'
-    },
-    {
-      title: 'Exploit Development',
-      description: 'Creating proof-of-concept exploits for discovered vulnerabilities. Automating exploitation to demonstrate real-world impact.',
-      icon: 'bug'
-    },
-    {
-      title: 'Security Research',
-      description: 'Responsible disclosure of vulnerabilities in commercial software. Multiple CVE discoveries in enterprise applications.',
-      icon: 'search'
-    },
-    {
-      title: 'SecOps',
-      description: 'Deploying and managing security tools: Nessus, Rapid7 InsightVM/IDR/AppSec, CyberArk PAM, Darktrace NTA, Microsoft Sentinel & XDR, UTMStack SIEM.',
-      icon: 'shield'
     },
     {
       title: 'Code Review',
@@ -168,9 +158,34 @@ const siteMetadata = {
       icon: 'file'
     },
     {
-      title: 'Security Consulting',
-      description: 'Providing end-to-end security services to clients across industries. Risk assessments, compliance guidance, and security architecture.',
-      icon: 'briefcase'
+      title: 'Cloud Security',
+      description: 'AWS, Azure, and GCP configuration reviews. Cloud environment penetration testing and security architecture assessment.',
+      icon: 'cloud'
+    },
+    {
+      title: 'Adversary Simulation',
+      description: 'Adversary emulation and ransomware simulation exercises. Testing detection and response capabilities against realistic threats.',
+      icon: 'skull'
+    },
+    {
+      title: 'Security Exercises',
+      description: 'Tabletop exercises for incident response readiness. Scenario-based training and security awareness programs.',
+      icon: 'clipboard'
+    },
+    {
+      title: 'Configuration Reviews',
+      description: 'Network device and SOE/endpoint hardening assessments. Security baseline validation and compliance verification.',
+      icon: 'settings'
+    },
+    {
+      title: 'Security Research',
+      description: 'CVE discoveries and responsible disclosure. Exploit development and proof-of-concept creation for vulnerability validation.',
+      icon: 'search'
+    },
+    {
+      title: 'Security Operations',
+      description: 'SIEM, XDR, PAM, and NTA deployment and management. Building and leading SOC capabilities from the ground up.',
+      icon: 'shield'
     }
   ],
 

@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { FaShieldAlt, FaBug, FaCode, FaArrowRight, FaSearch, FaBriefcase, FaFileCode, FaCertificate, FaTwitter } from 'react-icons/fa'
+import { FaShieldAlt, FaBug, FaCode, FaArrowRight, FaSearch, FaBriefcase, FaFileCode, FaCertificate, FaTwitter, FaCrosshairs, FaCloud, FaSkull, FaClipboardList, FaCog } from 'react-icons/fa'
 import siteMetadata from '../data/siteMetadata'
 import { getSortedPostsData } from '../lib/posts'
 import BlogPostCard from '../components/BlogPostCard'
@@ -23,7 +23,12 @@ const expertiseIcons = {
   search: FaSearch,
   shield: FaShieldAlt,
   file: FaFileCode,
-  briefcase: FaBriefcase
+  briefcase: FaBriefcase,
+  target: FaCrosshairs,
+  cloud: FaCloud,
+  skull: FaSkull,
+  clipboard: FaClipboardList,
+  settings: FaCog
 }
 
 export default function Home({ recentPosts, totalPosts }) {
