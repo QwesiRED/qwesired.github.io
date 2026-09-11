@@ -72,10 +72,11 @@ export default function BlogPost({ post, relatedPosts }) {
         {ogImage && <meta name="twitter:image" content={ogImage} key="twitter:image" />}
       </Head>
 
-      {/* Wide container for sidebar layout */}
-      <div className="xl:flex xl:justify-center xl:gap-8 px-4 py-12">
-        {/* Main Content - keeps original max-w-3xl width */}
-        <article className="max-w-3xl mx-auto xl:mx-0 xl:flex-shrink-0">
+      {/* Main container - expands on xl to fit blog + sidebar */}
+      <div className="max-w-3xl xl:max-w-6xl mx-auto px-4 py-12">
+        <div className="xl:flex xl:gap-10">
+          {/* Blog content - always keeps its full width (max-w-3xl) */}
+          <article className="w-full xl:w-[768px] xl:flex-shrink-0">
           {/* Back Link */}
           <Link href="/blog" className="inline-flex items-center text-dark-muted hover:text-accent transition-colors text-sm mb-8">
             <FaArrowLeft className="mr-2" size={12} />
@@ -188,8 +189,8 @@ export default function BlogPost({ post, relatedPosts }) {
           </div>
         </article>
 
-        {/* Desktop Sidebar - only visible on xl screens, uses extra space */}
-        <aside className="hidden xl:block w-72 flex-shrink-0">
+        {/* Right side panel - uses remaining space on xl screens */}
+        <aside className="hidden xl:block xl:flex-1 xl:max-w-xs">
           <div className="sticky top-20 space-y-6">
             {/* Post Meta */}
             <div className="card p-5">
@@ -292,6 +293,7 @@ export default function BlogPost({ post, relatedPosts }) {
             )}
           </div>
         </aside>
+        </div>
       </div>
     </>
   )
