@@ -34,6 +34,11 @@ function addHeadingIds(html) {
   })
 }
 
+function removeFirstH1(html, title) {
+  // Remove the first H1 if it's similar to the page title (prevents duplicate)
+  return html.replace(/^(\s*<h1[^>]*>.*?<\/h1>\s*)/i, '')
+}
+
 export async function getStaticProps({ params }) {
   const postData = await getPostData(params.slug)
   const allPosts = getSortedPostsData()
@@ -43,9 +48,10 @@ export async function getStaticProps({ params }) {
     .filter(p => p.slug !== params.slug)
     .slice(0, 5)
 
-  // Extract TOC and add IDs to headings
-  const toc = extractTOC(postData.contentHtml)
-  const contentHtml = addHeadingIds(postData.contentHtml)
+  // Remove duplicate H1, extract TOC and add IDs to headings
+  const cleanedHtml = removeFirstH1(postData.contentHtml, postData.title)
+  const toc = extractTOC(cleanedHtml)
+  const contentHtml = addHeadingIds(cleanedHtml)
 
   return {
     props: {
