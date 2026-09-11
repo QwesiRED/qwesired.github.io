@@ -1,8 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@source "../pages/**/*.{js,jsx}";
+@source "../components/**/*.{js,jsx}";
+
+@theme {
+  --color-accent: #14b8a6;
+  --color-accent-50: #f0fdfa;
+  --color-accent-100: #ccfbf1;
+  --color-accent-200: #99f6e4;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+  --color-accent-600: #0d9488;
+  --color-accent-700: #0f766e;
+  --color-accent-800: #115e59;
+  --color-accent-900: #134e4a;
+  --color-accent-glow: rgba(20, 184, 166, 0.15);
+
+  --color-dark-bg: #0d1117;
+  --color-dark-card: #161b22;
+  --color-dark-elevated: #21262d;
+  --color-dark-border: #30363d;
+  --color-dark-border-subtle: #21262d;
+  --color-dark-text: #e6edf3;
+  --color-dark-muted: #8b949e;
+  --color-dark-faded: #6e7681;
+
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-danger: #f85149;
+  --color-info: #58a6ff;
+  --color-purple: #a371f7;
+
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
 :root {
   --bg-primary: #0d1117;
