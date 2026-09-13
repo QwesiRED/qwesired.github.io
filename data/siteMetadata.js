@@ -191,13 +191,13 @@ const siteMetadata = {
 
   cves: [
     {
-      id: 'CVE-2026-86741',
+      id: 'CVE-2026-86751',
       title: 'Snipe-IT SSRF & File Disclosure',
       product: 'Snipe-IT',
-      versions: '4.0.0 - 8.6.3',
+      versions: 'before 8.7.0',
       severity: 'Critical',
-      cvss: '9.6',
-      description: 'Arbitrary File Read and SSRF via Category EULA Markdown Injection'
+      cvss: '8.5',
+      description: 'Arbitrary File Read and SSRF via Acceptance Note Markdown Injection'
     },
     {
       id: 'CVE-2026-80138',

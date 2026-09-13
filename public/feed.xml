@@ -5,15 +5,15 @@
     <link>https://qwesired.github.io</link>
     <description>Offensive Security Consultant | AppSec &amp; SecOps Leader</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Sep 2026 14:08:16 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 13 Sep 2026 12:34:08 GMT</lastBuildDate>
     <atom:link href="https://qwesired.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     
     <item>
-      <title><![CDATA[CVE-2026-86741: Critical File Disclosure and SSRF in Snipe-IT via EULA Injection]]></title>
-      <link>https://qwesired.github.io/blog/cve-2026-86741</link>
-      <guid>https://qwesired.github.io/blog/cve-2026-86741</guid>
-      <pubDate>Fri, 11 Sep 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[A CVSS 9.6 vulnerability in Snipe-IT allowing arbitrary file read and SSRF through malicious markdown images in category EULA fields, leading to complete credential disclosure.]]></description>
+      <title><![CDATA[CVE-2026-86751: Critical File Disclosure and SSRF in Snipe-IT via Acceptance Note Injection]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-86751</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-86751</guid>
+      <pubDate>Sun, 13 Sep 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A Critical vulnerability in Snipe-IT allowing arbitrary file read and SSRF through malicious markdown images in checkout acceptance notes, enabling any authenticated user to exfiltrate server credentials.]]></description>
     </item>
     <item>
       <title><![CDATA[CVE-2026-80138: ClipBucket V5 Unauthenticated RCE via Web Installer Command Injection]]></title>
