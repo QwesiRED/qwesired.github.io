@@ -191,6 +191,33 @@ const siteMetadata = {
 
   cves: [
     {
+      id: 'CVE-2026-77929',
+      title: 'ClipBucket V5 File Upload RCE',
+      product: 'ClipBucket V5',
+      versions: '<= 5.5.3',
+      severity: 'Critical',
+      cvss: '8.8',
+      description: 'Arbitrary PHP File Upload to RCE via Extension/MIME Validation Mismatch'
+    },
+    {
+      id: 'CVE-2026-77928',
+      title: 'ClipBucket V5 PM Deletion SQLi',
+      product: 'ClipBucket V5',
+      versions: '<= 5.5.3',
+      severity: 'High',
+      cvss: '7.1',
+      description: 'Blind SQL Injection in Private Message Deletion via Array Parameter Bypass'
+    },
+    {
+      id: 'CVE-2026-77927',
+      title: 'ClipBucket V5 Photo Deletion SQLi',
+      product: 'ClipBucket V5',
+      versions: '<= 5.5.3',
+      severity: 'High',
+      cvss: '7.1',
+      description: 'Blind SQL Injection in Photo Deletion via Array Parameter Bypass'
+    },
+    {
       id: 'CVE-2026-86751',
       title: 'Snipe-IT SSRF & File Disclosure',
       product: 'Snipe-IT',

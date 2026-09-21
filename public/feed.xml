@@ -5,15 +5,36 @@
     <link>https://qwesired.github.io</link>
     <description>Offensive Security Consultant | AppSec &amp; SecOps Leader</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 13 Sep 2026 12:38:13 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 21 Sep 2026 08:43:44 GMT</lastBuildDate>
     <atom:link href="https://qwesired.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     
     <item>
-      <title><![CDATA[CVE-2026-86751: Critical File Disclosure and SSRF in Snipe-IT via Acceptance Note Injection]]></title>
+      <title><![CDATA[CVE-2026-77927: Blind SQL Injection in ClipBucket V5 Photo Deletion]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-77927</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-77927</guid>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Exploiting a sanitizer bypass in ClipBucket V5 to achieve blind SQL injection through the photo deletion endpoint, extracting full database contents including password hashes.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[CVE-2026-77928: Blind SQL Injection in ClipBucket V5 Private Message Deletion]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-77928</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-77928</guid>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A blind SQL injection vulnerability in ClipBucket V5 private messaging that enables full database extraction, demonstrated with complete cb_users table dump including password hashes.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[CVE-2026-77929: From Image Upload to Remote Code Execution in ClipBucket V5]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-77929</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-77929</guid>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A critical file upload vulnerability in ClipBucket V5 allows any registered user to upload PHP webshells disguised as images, achieving persistent remote code execution on the server.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[CVE-2026-86751: Snipe-IT Arbitrary File Read and SSRF via Acceptance Note Injection]]></title>
       <link>https://qwesired.github.io/blog/cve-2026-86751</link>
       <guid>https://qwesired.github.io/blog/cve-2026-86751</guid>
       <pubDate>Sun, 13 Sep 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[A Critical vulnerability in Snipe-IT allowing arbitrary file read and SSRF through malicious markdown images in checkout acceptance notes, enabling any authenticated user to exfiltrate server credentials.]]></description>
+      <description><![CDATA[How I discovered a critical vulnerability in Snipe-IT that allows any authenticated user to read arbitrary server files and perform SSRF attacks through a simple markdown image in an acceptance note.]]></description>
     </item>
     <item>
       <title><![CDATA[CVE-2026-80138: ClipBucket V5 Unauthenticated RCE via Web Installer Command Injection]]></title>
