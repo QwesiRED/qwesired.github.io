@@ -26,7 +26,7 @@ export default function Layout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/images/adam-nurudini.jpg" />
-        <meta name="theme-color" content="#0d1117" />
+        <meta name="theme-color" content="#0a1015" />
 
         {/* Open Graph / Social Sharing - use key props so pages can override */}
         <meta property="og:type" content="website" key="og:type" />

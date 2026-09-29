@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { format } from 'date-fns'
-import { FaArrowLeft, FaTwitter, FaLinkedin, FaCalendar, FaUser, FaArrowRight, FaClock, FaListUl } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
 import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts'
 import siteMetadata from '../../data/siteMetadata'
 
@@ -34,8 +33,7 @@ function addHeadingIds(html) {
   })
 }
 
-function removeFirstH1(html, title) {
-  // Remove the first H1 if it's similar to the page title (prevents duplicate)
+function removeFirstH1(html) {
   return html.replace(/^(\s*<h1[^>]*>.*?<\/h1>\s*)/i, '')
 }
 
@@ -43,48 +41,116 @@ export async function getStaticProps({ params }) {
   const postData = await getPostData(params.slug)
   const allPosts = getSortedPostsData()
 
-  // Get related posts (exclude current post, take up to 5)
-  const relatedPosts = allPosts
-    .filter(p => p.slug !== params.slug)
-    .slice(0, 5)
+  const currentIndex = allPosts.findIndex(p => p.slug === params.slug)
+  const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
 
-  // Remove duplicate H1, extract TOC and add IDs to headings
-  const cleanedHtml = removeFirstH1(postData.contentHtml, postData.title)
+  const cleanedHtml = removeFirstH1(postData.contentHtml)
   const toc = extractTOC(cleanedHtml)
   const contentHtml = addHeadingIds(cleanedHtml)
 
   return {
     props: {
       post: { ...postData, contentHtml },
-      relatedPosts,
+      prevPost,
+      nextPost,
       toc
     }
   }
 }
 
-const tagColorMap = {
-  'CVE': 'tag-red',
-  'Vulnerability Research': 'tag-green',
-  'Penetration Testing': 'tag-blue',
-  'Web Security': 'tag-purple',
-  'Authentication Bypass': 'tag-orange',
-  'Path Traversal': 'tag-orange',
-  'Critical': 'tag-red',
-  'SSRF': 'tag-purple',
-  'RCE': 'tag-red',
+const ArrowIcon = () => (
+  <svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+)
+
+const CalIcon = () => (
+  <svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+)
+
+const ClockIcon = () => (
+  <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M8 4.5V8l2.3 1.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+)
+
+const BoxIcon = () => (
+  <svg viewBox="0 0 16 16"><path d="M8 1.5 14 4.5v7L8 14.5 2 11.5v-7L8 1.5ZM2 4.5l6 3 6-3M8 7.5v7" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>
+)
+
+const ShieldIcon = () => (
+  <svg viewBox="0 0 16 16"><path d="M8 1.5 13 3.5v4c0 3.5-2.5 5.5-5 6.5-2.5-1-5-3-5-6.5v-4l5-2Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>
+)
+
+const UserIcon = () => (
+  <svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="2.5" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+)
+
+const XIcon = () => (
+  <svg viewBox="0 0 16 16"><path fill="currentColor" d="M12.16 1.5h2.21l-4.82 5.5 5.67 7.5h-4.44l-3.47-4.55-3.98 4.55H1.12l5.16-5.9L.84 1.5h4.55l3.14 4.15 3.63-4.15Zm-.77 11.68h1.22L4.71 2.75H3.42l7.97 10.43Z"/></svg>
+)
+
+const LinkedinIcon = () => (
+  <svg viewBox="0 0 16 16"><path fill="currentColor" d="M13.63 13.63h-2.37V10.3c0-.89-.02-2.03-1.23-2.03-1.24 0-1.43.97-1.43 1.96v3.4H6.23V6h2.28v1.04h.03c.32-.6 1.1-1.23 2.25-1.23 2.4 0 2.84 1.58 2.84 3.64v4.18ZM3.56 4.95a1.38 1.38 0 1 1 0-2.75 1.38 1.38 0 0 1 0 2.75ZM4.75 13.63H2.37V6h2.38v7.63ZM14.81 0H1.18C.53 0 0 .52 0 1.15v13.7c0 .64.53 1.15 1.18 1.15h13.63c.65 0 1.19-.51 1.19-1.15V1.15C16 .52 15.46 0 14.81 0Z"/></svg>
+)
+
+const CopyIcon = () => (
+  <svg viewBox="0 0 16 16"><rect x="4" y="4" width="9" height="11" rx="1" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M4 12H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" strokeWidth="1.3"/></svg>
+)
+
+const ChevLeftIcon = () => (
+  <svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+)
+
+const ChevRightIcon = () => (
+  <svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+)
+
+const Ring = ({ value, sev }) => {
+  const r = 38, c = 2 * Math.PI * r, p = (value / 10) * c
+  return (
+    <svg className={`ring big ${sev}`} viewBox="0 0 96 96">
+      <circle cx="48" cy="48" r={r} className="bg" />
+      <circle cx="48" cy="48" r={r} className="fg" strokeDasharray={`${p} ${c}`} transform="rotate(-90 48 48)" />
+      <text x="48" y="45" textAnchor="middle" className="v">{parseFloat(value).toFixed(1)}</text>
+      <text x="48" y="58" textAnchor="middle" className="l">CVSS 3.1</text>
+    </svg>
+  )
 }
 
-export default function BlogPost({ post, relatedPosts, toc }) {
+export default function BlogPost({ post, prevPost, nextPost, toc }) {
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [copied, setCopied] = useState(false)
   const shareUrl = `${siteMetadata.siteUrl}/blog/${post.slug}`
   const ogImage = post.image ? `${siteMetadata.siteUrl}${post.image}` : null
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setScrollProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const fmtDate = (d) => {
+    if (!d) return ''
+    const date = new Date(d + 'T00:00:00')
+    return date.toLocaleDateString('en-AU', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()
+  }
+
+  const isCVE = post.slug?.includes('cve') || post.tags?.some(t => t.toLowerCase().includes('cve'))
+  const sevClass = post.severity?.toLowerCase() || (post.cvss >= 9 ? 'critical' : post.cvss >= 7 ? 'high' : 'medium')
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(shareUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
     <>
       <Head>
         <title>{post.title} | {siteMetadata.title}</title>
         <meta name="description" content={post.description || post.title} key="description" />
-
-        {/* Open Graph */}
         <meta property="og:type" content="article" key="og:type" />
         <meta property="og:title" content={post.title} key="og:title" />
         <meta property="og:description" content={post.description || post.title} key="og:description" />
@@ -95,8 +161,6 @@ export default function BlogPost({ post, relatedPosts, toc }) {
         {ogImage && <meta property="og:image" content={ogImage} key="og:image" />}
         {ogImage && <meta property="og:image:width" content="1200" />}
         {ogImage && <meta property="og:image:height" content="630" />}
-
-        {/* Twitter Card */}
         <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} key="twitter:card" />
         <meta name="twitter:site" content="@Qwesi_RED" key="twitter:site" />
         <meta name="twitter:title" content={post.title} key="twitter:title" />
@@ -104,260 +168,162 @@ export default function BlogPost({ post, relatedPosts, toc }) {
         {ogImage && <meta name="twitter:image" content={ogImage} key="twitter:image" />}
       </Head>
 
-      {/* Main container - expands on xl to fit blog + sidebar */}
-      <div className="max-w-3xl xl:max-w-6xl mx-auto px-4 py-12">
-        <div className="xl:flex xl:gap-10">
-          {/* Blog content - always keeps its full width (max-w-3xl) */}
-          <article className="w-full xl:w-[768px] xl:flex-shrink-0">
-          {/* Back Link */}
-          <Link href="/blog" className="inline-flex items-center text-dark-muted hover:text-accent transition-colors text-sm mb-8">
-            <FaArrowLeft className="mr-2" size={12} />
-            Back to Blog
-          </Link>
+      {/* Progress bar */}
+      <div className="progress"><span style={{ width: `${scrollProgress}%` }}></span></div>
 
-          {/* Hero Image */}
-          {post.image && (
-            <div className="mb-8 rounded-lg overflow-hidden border border-dark-border-subtle">
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-auto"
-              />
-            </div>
-          )}
+      <article className="writeup">
+        <div className="wrap">
+          {/* Breadcrumb */}
+          <nav className="crumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/blog">Research</Link>
+            <span>/</span>
+            <b>{post.title.length > 40 ? post.title.slice(0, 40) + '…' : post.title}</b>
+          </nav>
 
-          {/* Header */}
-          <header className="mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-dark-text mb-4 font-sans leading-tight">
-              {post.title}
-            </h1>
-
-            {/* Mobile/Tablet: Show date, author and reading time inline */}
-            <div className="xl:hidden flex flex-wrap items-center gap-3 text-dark-muted text-sm mb-4">
-              <span className="flex items-center gap-1.5">
-                <FaCalendar size={12} className="text-dark-faded" />
-                {format(new Date(post.date), 'MMMM d, yyyy')}
-              </span>
-              <span className="text-dark-faded">•</span>
-              <span className="flex items-center gap-1.5">
-                <FaClock size={12} className="text-dark-faded" />
-                {post.readingTime} min read
-              </span>
-              <span className="text-dark-faded">•</span>
-              <span>By {siteMetadata.author}</span>
-            </div>
-
-            {/* Mobile/Tablet: Show tags */}
-            {post.tags && (
-              <div className="xl:hidden flex flex-wrap gap-2">
-                {post.tags.slice(0, 4).map(tag => (
-                  <span key={tag} className={`tag ${tagColorMap[tag] || ''}`}>
-                    {tag}
-                  </span>
+          {/* Header with image */}
+          <header className="wu-head">
+            <div className="wu-head-text">
+              <div className="wu-badges">
+                {isCVE && post.cvss && (
+                  <span className={`sev ${sevClass}`}>{post.severity?.toUpperCase() || 'HIGH'} · {post.cvss}</span>
+                )}
+                {post.product && (
+                  <span className="pill"><BoxIcon /> {post.product}</span>
+                )}
+                {post.tags?.slice(0, 2).map((tag, i) => (
+                  <span key={i} className="pill outline">{tag}</span>
                 ))}
-                {post.tags.length > 4 && (
-                  <span className="text-dark-faded text-xs">+{post.tags.length - 4} more</span>
+              </div>
+              <h1>{post.title}</h1>
+              {post.description && <p className="standfirst">{post.description}</p>}
+              <div className="wu-meta">
+                <span className="au">
+                  <img src="/images/adam-nurudini.jpg" alt={siteMetadata.author} />
+                  {siteMetadata.author}
+                </span>
+                <span className="mi"><CalIcon /> {fmtDate(post.date)}</span>
+                <span className="mi"><ClockIcon /> {post.readingTime || post.readTime || 5} min read</span>
+                {post.cveId && (
+                  <a className="mi" href={`https://www.cve.org/CVERecord?id=${post.cveId}`} target="_blank" rel="noopener noreferrer">
+                    <ShieldIcon /> {post.cveId}
+                  </a>
                 )}
               </div>
+            </div>
+            {post.image && (
+              <img src={post.image} alt={post.title} className="wu-thumb" />
             )}
           </header>
 
-          {/* Content */}
-          <div
-            className="prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-          />
+          {/* Two-column layout */}
+          <div className="wu-layout">
+            {/* Sidebar */}
+            <aside className="wu-side">
+              {/* CVSS Score */}
+              {isCVE && post.cvss && (
+                <div className="side-box score-box">
+                  <div className="ring-wrap">
+                    <Ring value={post.cvss} sev={sevClass} />
+                  </div>
+                  {post.vector && <p className="vector mono">{post.vector}</p>}
+                </div>
+              )}
 
-          {/* Mobile/Tablet: Share and Author */}
-          <div className="xl:hidden mt-12 pt-8 border-t border-dark-border-subtle">
-            <h3 className="text-sm font-semibold text-dark-text mb-4 font-sans">Share this post</h3>
-            <div className="flex gap-3 mb-8">
-              <a
-                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}&via=Qwesi_RED`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-3 py-1.5 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-1.5"
-              >
-                <FaTwitter size={12} />
-                Twitter
-              </a>
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-3 py-1.5 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-1.5"
-              >
-                <FaLinkedin size={12} />
-                LinkedIn
-              </a>
-            </div>
-
-            {/* Author Card */}
-            <div className="card p-4 flex items-center gap-4 mb-8">
-              <img
-                src="/images/adam-nurudini.jpg"
-                alt={siteMetadata.author}
-                className="w-12 h-12 rounded-full object-cover border border-accent/30"
-              />
-              <div>
-                <h4 className="text-sm font-semibold text-dark-text font-sans">{siteMetadata.author}</h4>
-                <p className="text-dark-muted text-xs">Offensive Security Consultant | CVE Author</p>
+              {/* Metadata */}
+              <div className="side-box meta-box">
+                <div className="label">Details</div>
+                <dl className="mlist">
+                  <dt>Published</dt><dd>{fmtDate(post.date)}</dd>
+                  {post.product && <><dt>Product</dt><dd>{post.product}</dd></>}
+                  {post.versions && <><dt>Versions</dt><dd>{post.versions}</dd></>}
+                  {post.cveId && <><dt>CVE ID</dt><dd>{post.cveId}</dd></>}
+                  <dt>Status</dt><dd><span className="dot-ok"></span>Published</dd>
+                </dl>
               </div>
-            </div>
 
-            {/* Mobile: Related Posts */}
-            {relatedPosts.length > 0 && (
-              <div>
-                <h3 className="text-sm font-semibold text-dark-text mb-4 font-sans">More Posts</h3>
-                <div className="space-y-3">
-                  {relatedPosts.slice(0, 3).map(relPost => (
-                    <Link
-                      key={relPost.slug}
-                      href={`/blog/${relPost.slug}`}
-                      className="block card p-3 hover:border-accent transition-colors"
-                    >
-                      <h4 className="text-sm text-dark-text font-medium line-clamp-2 mb-1">{relPost.title}</h4>
-                      <span className="text-xs text-dark-faded">{format(new Date(relPost.date), 'MMM d, yyyy')}</span>
-                    </Link>
-                  ))}
+              {/* Table of Contents */}
+              {toc.length > 2 && (
+                <div className="side-box toc-box">
+                  <div className="label">Contents</div>
+                  <nav className="toc">
+                    {toc.map((item, idx) => (
+                      <a key={idx} href={`#${item.id}`} className={item.level === 3 ? 'sub' : ''}>
+                        {item.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              )}
+
+              {/* Share */}
+              <div className="side-box share-box">
+                <div className="label">Share</div>
+                <div className="share">
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}&via=Qwesi_RED`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Share on X"
+                  >
+                    <XIcon />
+                  </a>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Share on LinkedIn"
+                  >
+                    <LinkedinIcon />
+                  </a>
+                  <button onClick={copyLink} title="Copy link">
+                    <CopyIcon /> {copied ? 'Copied!' : 'Copy'}
+                  </button>
                 </div>
               </div>
-            )}
+            </aside>
+
+            {/* Main content */}
+            <div className="wu-body" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
           </div>
-        </article>
 
-        {/* Right side panel - uses remaining space on xl screens */}
-        <aside className="hidden xl:block xl:flex-1 xl:max-w-xs">
-          <div className="sticky top-20 space-y-6">
-            {/* Post Meta */}
-            <div className="card p-5">
-              <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Post Info</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center gap-2 text-dark-muted">
-                  <FaCalendar size={12} className="text-dark-faded" />
-                  <span>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
-                </div>
-                <div className="flex items-center gap-2 text-dark-muted">
-                  <FaClock size={12} className="text-dark-faded" />
-                  <span>{post.readingTime} min read</span>
-                </div>
-                <div className="flex items-center gap-2 text-dark-muted">
-                  <FaUser size={12} className="text-dark-faded" />
-                  <span>{siteMetadata.author}</span>
-                </div>
+          {/* Author card */}
+          <div className="author-card">
+            <img src="/images/adam-nurudini.jpg" alt={siteMetadata.author} />
+            <div>
+              <div className="label">Written by</div>
+              <h3>{siteMetadata.author}</h3>
+              <p>Offensive Security Consultant specializing in vulnerability research, penetration testing, and red team operations. Published CVE author.</p>
+              <div className="ac-links">
+                <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer">@Qwesi_RED</a>
+                <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href={siteMetadata.github} target="_blank" rel="noopener noreferrer">GitHub</a>
               </div>
-            </div>
-
-            {/* Table of Contents */}
-            {toc.length > 2 && (
-              <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <FaListUl size={10} /> Contents
-                </h3>
-                <nav className="space-y-2">
-                  {toc.map((item, idx) => (
-                    <a
-                      key={idx}
-                      href={`#${item.id}`}
-                      className={`block text-xs text-dark-muted hover:text-accent transition-colors line-clamp-1 ${
-                        item.level === 3 ? 'pl-3 text-dark-faded' : ''
-                      }`}
-                    >
-                      {item.text}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            )}
-
-            {/* Tags */}
-            {post.tags && post.tags.length > 0 && (
-              <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Topics</h3>
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map(tag => (
-                    <span key={tag} className={`tag ${tagColorMap[tag] || ''}`}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* More Posts - prioritized for reader engagement */}
-            {relatedPosts.length > 0 && (
-              <div className="card p-5">
-                <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">More Posts</h3>
-                <div className="space-y-4">
-                  {relatedPosts.map(relPost => (
-                    <Link
-                      key={relPost.slug}
-                      href={`/blog/${relPost.slug}`}
-                      className="block group"
-                    >
-                      <h4 className="text-sm text-dark-text group-hover:text-accent transition-colors font-medium line-clamp-2 mb-1">
-                        {relPost.title}
-                      </h4>
-                      <span className="text-xs text-dark-faded">{format(new Date(relPost.date), 'MMM d, yyyy')}</span>
-                    </Link>
-                  ))}
-                </div>
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center text-accent hover:text-accent-600 text-xs mt-4 gap-1"
-                >
-                  View all posts <FaArrowRight size={10} />
-                </Link>
-              </div>
-            )}
-
-            {/* Share */}
-            <div className="card p-5">
-              <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Share</h3>
-              <div className="flex flex-col gap-2">
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}&via=Qwesi_RED`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-2 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-2 justify-center"
-                >
-                  <FaTwitter size={14} />
-                  Share on Twitter
-                </a>
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-2 card text-dark-muted hover:text-accent hover:border-accent text-xs gap-2 justify-center"
-                >
-                  <FaLinkedin size={14} />
-                  Share on LinkedIn
-                </a>
-              </div>
-            </div>
-
-            {/* Author */}
-            <div className="card p-5">
-              <h3 className="text-xs font-semibold text-dark-faded uppercase tracking-wider mb-4">Author</h3>
-              <div className="flex items-center gap-3">
-                <img
-                  src="/images/adam-nurudini.jpg"
-                  alt={siteMetadata.author}
-                  className="w-10 h-10 rounded-full object-cover border border-accent/30"
-                />
-                <div>
-                  <h4 className="text-sm font-semibold text-dark-text font-sans">{siteMetadata.author}</h4>
-                  <p className="text-dark-faded text-xs">CVE Author</p>
-                </div>
-              </div>
-              <p className="text-dark-muted text-xs mt-3 leading-relaxed">
-                Offensive Security Consultant specializing in vulnerability research and penetration testing.
-              </p>
             </div>
           </div>
-        </aside>
+
+          {/* Post navigation */}
+          <div className="post-nav">
+            {prevPost ? (
+              <Link href={`/blog/${prevPost.slug}`} className="pn prev">
+                <span><ChevLeftIcon /> Previous</span>
+                <b>{prevPost.title}</b>
+              </Link>
+            ) : <div></div>}
+            {nextPost ? (
+              <Link href={`/blog/${nextPost.slug}`} className="pn next">
+                <span>Next <ChevRightIcon /></span>
+                <b>{nextPost.title}</b>
+              </Link>
+            ) : <div></div>}
+          </div>
+
+          <Link href="/blog" className="back-all">
+            <ChevLeftIcon /> Back to all posts
+          </Link>
         </div>
-      </div>
+      </article>
     </>
   )
 }

@@ -1,58 +1,38 @@
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { FaClock } from 'react-icons/fa'
-
-const tagColors = {
-  'CVE': 'tag-red',
-  'Vulnerability Research': 'tag-green',
-  'Penetration Testing': 'tag-blue',
-  'Web Security': 'tag-purple',
-  'Authentication Bypass': 'tag-orange',
-  'Path Traversal': 'tag-orange',
-  'Red Team': 'tag-red',
-  'OSINT': 'tag-green',
-  'Exploit Development': 'tag-purple',
-}
+import { FaArrowRight } from 'react-icons/fa'
 
 export default function BlogPostCard({ post }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="block">
-      <article className="card p-5 card-interactive">
-        {/* Tags row */}
-        {post.tags && (
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            {post.tags.slice(0, 4).map(tag => (
-              <span key={tag} className={`tag ${tagColors[tag] || ''}`}>
-                {tag}
-              </span>
-            ))}
-            <span className="text-dark-faded text-xs ml-auto flex items-center gap-3">
-              {post.readingTime && (
-                <span className="flex items-center gap-1">
-                  <FaClock size={10} />
-                  {post.readingTime} min
+    <Link href={`/blog/${post.slug}`} className="block group">
+      <article className="py-5 border-b border-dark-border-subtle last:border-b-0">
+        {/* Date */}
+        <div className="text-xs text-dark-faded uppercase tracking-wider mb-2">
+          {format(new Date(post.date), 'dd MMM yyyy').toUpperCase()}
+        </div>
+
+        {/* Content row */}
+        <div className="flex items-center justify-between gap-6">
+          <div className="flex-1 min-w-0">
+            {/* Title */}
+            <h3 className="text-base text-dark-text group-hover:text-accent transition-colors mb-2 line-clamp-1">
+              {post.title}
+            </h3>
+
+            {/* Meta */}
+            <div className="flex items-center gap-3 text-xs">
+              {post.tags?.slice(0, 2).map(tag => (
+                <span key={tag} className="text-dark-muted">
+                  {tag}
                 </span>
+              ))}
+              {post.readingTime && (
+                <span className="text-dark-faded">⏱ {post.readingTime} min</span>
               )}
-              <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
-            </span>
+            </div>
           </div>
-        )}
 
-        {/* Title */}
-        <h3 className="text-base font-semibold text-dark-text mb-2 font-sans line-clamp-2">
-          {post.title}
-        </h3>
-
-        {/* Description */}
-        {post.description && (
-          <p className="text-dark-muted text-sm mb-4 line-clamp-2">
-            {post.description}
-          </p>
-        )}
-
-        {/* Read link */}
-        <div className="text-accent text-sm">
-          Read: {post.title.length > 50 ? post.title.substring(0, 50) + '...' : post.title} →
+          <FaArrowRight className="text-dark-faded group-hover:text-accent transition-colors flex-shrink-0" size={12} />
         </div>
       </article>
     </Link>

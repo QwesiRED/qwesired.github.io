@@ -1,170 +1,94 @@
 import Link from 'next/link'
-import { useState } from 'react'
-import { FaGithub, FaTwitter, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaRss, FaChevronDown, FaSearch } from 'react-icons/fa'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import siteMetadata from '../data/siteMetadata'
 
+const SunIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+)
+
+const MoonIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+)
+
+const GithubIcon = () => (
+  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+)
+
+const LinkedinIcon = () => (
+  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+)
+
+const XIcon = () => (
+  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg>
+)
+
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [resourcesOpen, setResourcesOpen] = useState(false)
+  const router = useRouter()
+  const [theme, setTheme] = useState('dark')
+  const [mounted, setMounted] = useState(false)
 
-  const mainLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/blog', label: 'Blog' },
+  useEffect(() => {
+    setMounted(true)
+    const stored = localStorage.getItem('theme') || 'dark'
+    setTheme(stored)
+    document.documentElement.setAttribute('data-theme', stored)
+  }, [])
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    setTheme(next)
+    document.documentElement.setAttribute('data-theme', next)
+    localStorage.setItem('theme', next)
+  }
+
+  const navLinks = [
+    { href: '/', label: 'HOME' },
+    { href: '/blog', label: 'RESEARCH' },
     { href: '/cves', label: 'CVEs' },
+    { href: '/tools', label: 'TOOLS' },
+    { href: '/talks', label: 'TALKS' },
+    { href: '/about', label: 'ABOUT' },
+    { href: '/contact', label: 'CONTACT' },
   ]
 
-  const resourceLinks = [
-    { href: '/tools', label: 'Tools' },
-    { href: '/ctf', label: 'CTF Writeups' },
-    { href: '/talks', label: 'Talks' },
-  ]
+  const isActive = (href) => {
+    if (href === '/') return router.pathname === '/'
+    return router.pathname.startsWith(href.split('#')[0]) && href.split('#')[0] !== '/'
+  }
 
   return (
-    <nav className="sticky top-0 z-50 bg-dark-bg/95 backdrop-blur-sm border-b border-dark-border-subtle">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-14">
-          {/* Logo */}
-          <Link href="/" className="flex items-center font-mono text-sm group gap-2">
-            <img
-              src="/images/icon-32.png"
-              alt="QwesiRED"
-              className="w-6 h-6 rounded"
-            />
-            <span className="text-accent">qwesired</span>
-            <span className="text-dark-muted">@sh:</span>
-            <span className="text-dark-text">~</span>
-            <span className="text-dark-muted">#</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-5">
-            {mainLinks.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-dark-muted hover:text-dark-text transition-colors text-sm"
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            {/* Resources Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setResourcesOpen(!resourcesOpen)}
-                onBlur={() => setTimeout(() => setResourcesOpen(false), 200)}
-                className="flex items-center text-dark-muted hover:text-dark-text transition-colors text-sm gap-1"
-              >
-                Resources <FaChevronDown size={10} className={`transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {resourcesOpen && (
-                <div className="absolute top-full left-0 mt-2 py-2 w-40 bg-dark-card border border-dark-border rounded-md shadow-lg z-50">
-                  {resourceLinks.map(link => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setResourcesOpen(false)}
-                      className="block px-4 py-2 text-sm text-dark-muted hover:text-accent hover:bg-dark-elevated transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right side icons */}
-          <div className="hidden md:flex items-center space-x-2">
+    <nav className="nav">
+      <div className="wrap">
+        <Link href="/" className="brand">
+          <img src="/images/icon-32.png" alt="" />
+          <span>Qwesi</span><b>RED</b>
+        </Link>
+        <div className="links">
+          {navLinks.map((link, idx) => (
             <Link
-              href="/search"
-              className="text-dark-faded hover:text-accent transition-colors p-2"
-              title="Search"
+              key={idx}
+              href={link.href}
+              className={isActive(link.href) ? 'active' : ''}
             >
-              <FaSearch size={14} />
+              {link.label}
             </Link>
-            <a
-              href={siteMetadata.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dark-faded hover:text-accent transition-colors p-2"
-              title="GitHub"
-            >
-              <FaGithub size={15} />
-            </a>
-            <a
-              href={siteMetadata.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dark-faded hover:text-accent transition-colors p-2"
-              title="Twitter"
-            >
-              <FaTwitter size={15} />
-            </a>
-            <a
-              href={siteMetadata.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dark-faded hover:text-accent transition-colors p-2"
-              title="LinkedIn"
-            >
-              <FaLinkedin size={15} />
-            </a>
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-dark-muted hover:text-accent p-1"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
-          </button>
+          ))}
         </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-dark-border-subtle">
-            <div className="space-y-1">
-              {mainLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block py-2 px-2 text-dark-muted hover:text-accent hover:bg-dark-elevated rounded transition-colors text-sm"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="pt-2 pb-1 px-2 text-xs text-dark-faded uppercase tracking-wider">Resources</div>
-              {resourceLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block py-2 px-4 text-dark-muted hover:text-accent hover:bg-dark-elevated rounded transition-colors text-sm"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <div className="flex items-center space-x-4 pt-4 mt-4 border-t border-dark-border-subtle px-2">
-              <Link href="/search" className="text-dark-faded hover:text-accent p-1">
-                <FaSearch size={14} />
-              </Link>
-              <a href={siteMetadata.github} target="_blank" rel="noopener noreferrer" className="text-dark-faded hover:text-accent p-1">
-                <FaGithub size={15} />
-              </a>
-              <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer" className="text-dark-faded hover:text-accent p-1">
-                <FaTwitter size={15} />
-              </a>
-              <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="text-dark-faded hover:text-accent p-1">
-                <FaLinkedin size={15} />
-              </a>
-            </div>
-          </div>
-        )}
+        <div className="social">
+          <a href={siteMetadata.github} target="_blank" rel="noopener noreferrer" title="GitHub"><GithubIcon /></a>
+          <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn"><LinkedinIcon /></a>
+          <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer" title="X"><XIcon /></a>
+          {mounted && (
+            <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   )

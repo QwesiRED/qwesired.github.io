@@ -1,21 +1,90 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { FaGithub, FaTwitter, FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaCertificate, FaBriefcase, FaMicrophone, FaCode, FaArrowRight, FaExternalLinkAlt } from 'react-icons/fa'
 import siteMetadata from '../data/siteMetadata'
 
-const typeColors = {
-  offensive: 'border-l-danger',
-  management: 'border-l-info',
-  engineering: 'border-l-success'
-}
+const ArrowIcon = () => (
+  <svg className="arrow" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+)
 
-const typeBadges = {
-  offensive: 'tag-red',
-  management: 'tag-blue',
-  engineering: 'tag-green'
-}
+const ExtIcon = () => (
+  <svg viewBox="0 0 16 16" style={{width:'10px',height:'10px'}}><path d="M9 2h5v5M14 2L7.5 8.5M12 9.5V14H2V4h4.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+)
+
+const PinIcon = () => (
+  <svg viewBox="0 0 16 16"><path d="M8 14.5s4.8-4.4 4.8-8a4.8 4.8 0 0 0-9.6 0c0 3.6 4.8 8 4.8 8Z" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="8" cy="6.5" r="1.7" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
+)
+
+// Expertise Icons - Multi-color
+const PentestIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <rect x="2" y="4" width="20" height="16" rx="2" fill="#1e293b"/>
+    <rect x="2" y="4" width="20" height="3" fill="#334155"/>
+    <circle cx="4.5" cy="5.5" r=".7" fill="#ef4444"/>
+    <circle cx="6.5" cy="5.5" r=".7" fill="#eab308"/>
+    <circle cx="8.5" cy="5.5" r=".7" fill="#22c55e"/>
+    <path d="M5 11l2.5 2-2.5 2" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9.5 15h4" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+)
+const AppSecIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M12 2L4 5v6c0 5.5 3.4 10.3 8 12 4.6-1.7 8-6.5 8-12V5l-8-3z" fill="#1e40af"/>
+    <path d="M12 2L4 5v6c0 5.5 3.4 10.3 8 12V2z" fill="#3b82f6"/>
+    <path d="M9 12l2 2 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+const CodeReviewIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <rect x="3" y="3" width="18" height="18" rx="2" fill="#581c87"/>
+    <path d="M8 8l-3 4 3 4" stroke="#c084fc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M16 8l3 4-3 4" stroke="#c084fc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M14 6l-4 12" stroke="#e879f9" strokeWidth="1.8" strokeLinecap="round"/>
+  </svg>
+)
+const CloudSecIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M6.5 19h11a4.5 4.5 0 00.9-8.9A6 6 0 006.3 12a4 4 0 00.2 7z" fill="#0ea5e9"/>
+    <path d="M6.5 19h11a4.5 4.5 0 00.9-8.9A6 6 0 0012 5v14" fill="#0284c7"/>
+    <path d="M10 13h4M12 11v4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"/>
+  </svg>
+)
+const AdversaryIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="9" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="6" fill="none" stroke="#f59e0b" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="3" fill="none" stroke="#dc2626" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="1" fill="#dc2626"/>
+  </svg>
+)
+const SecOpsIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <rect x="2" y="3" width="20" height="14" rx="2" fill="#134e4a"/>
+    <rect x="4" y="5" width="5" height="3" rx=".5" fill="#2dd4bf"/>
+    <rect x="4" y="9" width="5" height="3" rx=".5" fill="#14b8a6"/>
+    <rect x="10" y="5" width="10" height="7" rx=".5" fill="#0d9488"/>
+    <path d="M11 8h3M11 10h5" stroke="#5eead4" strokeWidth=".8"/>
+    <rect x="7" y="19" width="10" height="2" rx="1" fill="#475569"/>
+    <rect x="10" y="17" width="4" height="2" fill="#475569"/>
+  </svg>
+)
+
+const expertise = [
+  { Icon: PentestIcon, title: 'PENETRATION TESTING', lines: ['Internal, external, and Active Directory assessments', 'Phishing simulations for human security awareness'] },
+  { Icon: AppSecIcon, title: 'APPLICATION SECURITY', lines: ['Web, mobile, and API security assessments', 'Application logic, authentication, and data handling'] },
+  { Icon: CodeReviewIcon, title: 'CODE REVIEW', lines: ['SAST with SonarQube, Checkmarx, Semgrep', 'Manual review augmented with LLM agents'] },
+  { Icon: CloudSecIcon, title: 'CLOUD SECURITY', lines: ['AWS, Azure, and GCP configuration reviews', 'Cloud pentesting and architecture assessment'] },
+  { Icon: AdversaryIcon, title: 'ADVERSARY SIMULATION', lines: ['Adversary emulation and ransomware simulation', 'Testing detection and response capabilities'] },
+  { Icon: SecOpsIcon, title: 'SECURITY OPERATIONS', lines: ['SIEM, XDR, PAM, and NTA deployment', 'Building and leading SOC capabilities'] },
+]
 
 export default function About() {
+  const exp = siteMetadata.experience
+  const certs = siteMetadata.certifications
+  const tech = siteMetadata.technologies
+  const talks = siteMetadata.talks
+  const cves = siteMetadata.cves
+  const highlights = siteMetadata.profile.highlights
+
   return (
     <>
       <Head>
@@ -23,245 +92,235 @@ export default function About() {
         <meta name="description" content={siteMetadata.profile.summary} />
       </Head>
 
-      {/* Hero Header */}
-      <section className="py-16 px-4 border-b border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Profile Info */}
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-4">
-                <img
-                  src="/images/adam-nurudini.jpg"
-                  alt={siteMetadata.author}
-                  className="w-20 h-20 rounded-full object-cover border-2 border-accent/50"
-                />
-                <div>
-                  <h1 className="text-3xl font-bold text-dark-text font-sans">{siteMetadata.author}</h1>
-                </div>
-              </div>
-              <p className="text-lg text-accent font-mono mb-3">{siteMetadata.profile.headline}</p>
-              <div className="flex items-center gap-2 text-dark-muted text-sm mb-4">
-                <FaMapMarkerAlt className="text-accent" size={12} />
-                <span>{siteMetadata.location}</span>
-              </div>
-              <p className="text-dark-muted text-sm leading-relaxed mb-6">
-                {siteMetadata.profile.summary}
-              </p>
-
-              {/* Social Links */}
-              <div className="flex gap-3">
-                <a href={siteMetadata.github} target="_blank" rel="noopener noreferrer"
-                   className="text-dark-faded hover:text-accent transition-colors p-1">
-                  <FaGithub size={16} />
-                </a>
-                <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer"
-                   className="text-dark-faded hover:text-accent transition-colors p-1">
-                  <FaTwitter size={16} />
-                </a>
-                <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer"
-                   className="text-dark-faded hover:text-accent transition-colors p-1">
-                  <FaLinkedin size={16} />
-                </a>
-                <a href={`mailto:${siteMetadata.email}`}
-                   className="text-dark-faded hover:text-accent transition-colors p-1">
-                  <FaEnvelope size={16} />
-                </a>
+      {/* HERO */}
+      <header className="hero about-hero">
+        <div className="wrap">
+          <div>
+            <div className="eyebrow">ABOUT<i>/</i>OFFENSIVE SECURITY CONSULTANT<i>/</i>MELBOURNE, AU</div>
+            <div className="id-row">
+              <img className="avatar-lg" src="/images/adam-nurudini.jpg" alt={siteMetadata.author} />
+              <div>
+                <h1 className="hero-title">Adam <em>Nurudini</em></h1>
+                <div className="subtitle">Security Consultant <i>|</i> AppSec &amp; SecOps Expertise</div>
+                <div className="loc"><PinIcon />Melbourne, Australia <span className="avail"><span className="pulse"></span>Available</span></div>
               </div>
             </div>
+            <p className="lede">{siteMetadata.profile.summary}</p>
+            <div className="stats">
+              <div className="stat"><strong>10+</strong><small>Years Experience</small></div>
+              <div className="stat"><strong>{cves.length}</strong><small>CVEs Published</small></div>
+              <div className="stat"><strong>{certs.length}</strong><small>Active Certs</small></div>
+            </div>
+            <div className="ctas">
+              <a href={`mailto:${siteMetadata.email}`} className="btn">Get in Touch <ArrowIcon /></a>
+              <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="link-cta"><span>LinkedIn</span> <ArrowIcon /></a>
+            </div>
+          </div>
 
-            {/* Quick Stats */}
-            <div className="terminal w-full md:w-72">
-              <div className="terminal-header">
-                <div className="terminal-dots">
-                  <div className="terminal-dot red" />
-                  <div className="terminal-dot yellow" />
-                  <div className="terminal-dot green" />
-                </div>
-                <span className="terminal-title">stats</span>
-              </div>
-              <div className="terminal-body text-xs space-y-1.5">
-                <div><span className="text-accent">EXPERIENCE:</span> <span className="text-dark-text">10+ years</span></div>
-                <div><span className="text-accent">CVEs:</span> <span className="text-dark-text">{siteMetadata.cves.length} published</span></div>
-                <div><span className="text-accent">CERTS:</span> <span className="text-dark-text">{siteMetadata.certifications.length} active</span></div>
-                <div><span className="text-accent">ROLES:</span> <span className="text-dark-text">{siteMetadata.experience.length} positions</span></div>
-                <div><span className="text-accent">STATUS:</span> <span className="text-success">Available</span></div>
-              </div>
+          {/* Terminal */}
+          <div className="term" aria-label="Profile terminal">
+            <div className="term-bar">
+              <span className="dot" style={{background:'#ff5f57'}}></span>
+              <span className="dot" style={{background:'#febc2e'}}></span>
+              <span className="dot" style={{background:'#28c840'}}></span>
+              <span className="t">qwesired@research:~</span>
+            </div>
+            <div className="term-body">
+              <div className="cmd">$ whoami --stats</div>
+              <dl className="kv">
+                <dt>EXPERIENCE</dt><dd>10+ YEARS</dd>
+                <dt>CVEs</dt><dd>{cves.length} PUBLISHED</dd>
+                <dt>CERTS</dt><dd>{certs.length} ACTIVE</dd>
+                <dt>ROLES</dt><dd>{exp.length} POSITIONS</dd>
+                <dt>STATUS</dt><dd>AVAILABLE</dd>
+              </dl>
+              <hr />
+              <div className="cmd">$ cat highlights.txt</div>
+              <ul className="hl">
+                {highlights.map((h, i) => (
+                  <li key={i}>{h}</li>
+                ))}
+              </ul>
+              <div className="prompt">$ <span className="caret"></span></div>
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Highlights */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-lg font-semibold text-dark-text mb-6 font-sans flex items-center gap-2">
-            <span className="text-accent">▸</span> Career Highlights
-          </h2>
-          <ul className="space-y-2">
-            {siteMetadata.profile.highlights.map((highlight, idx) => (
-              <li key={idx} className="flex items-start text-dark-muted text-sm">
-                <span className="text-accent mr-3 mt-0.5">→</span>
-                <span>{highlight}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <main>
+        {/* EXPERIENCE */}
+        <section className="block" id="experience">
+          <div className="wrap">
+            <div className="sec-head">
+              <h2>Experience</h2>
+              <span className="rule"></span>
+              <span className="count">{String(exp.length).padStart(2, '0')} ROLES</span>
+            </div>
+            <div className="jobs">
+              {exp.map((job, idx) => (
+                <article className="job" key={idx}>
+                  <div className="when">
+                    <span className="date">{job.period.toUpperCase()}</span>
+                    <span className="place">{job.location}</span>
+                    {idx === 0 && <span className="now">CURRENT</span>}
+                  </div>
+                  <div className="what">
+                    <h3>{job.role}</h3>
+                    <div className="co">{job.company}</div>
+                    <ul>
+                      {job.highlights.map((h, i) => (
+                        <li key={i}>{h}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-      {/* Experience Timeline */}
-      <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-lg font-semibold text-dark-text mb-8 font-sans flex items-center gap-2">
-            <FaBriefcase className="text-accent" size={14} /> Professional Experience
-          </h2>
-          <div className="space-y-4">
-            {siteMetadata.experience.map((exp, idx) => (
-              <div key={idx} className={`card border-l-2 ${typeColors[exp.type] || 'border-l-dark-border'} rounded-l-none p-5`}>
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm font-semibold text-dark-text font-sans">{exp.role}</h3>
-                      <span className={`tag text-[10px] py-0 ${typeBadges[exp.type] || ''}`}>
-                        {exp.type}
-                      </span>
+        {/* CERTIFICATIONS */}
+        <section className="block" id="certifications">
+          <div className="wrap">
+            <div className="sec-head">
+              <h2>Certifications</h2>
+              <span className="rule"></span>
+              <span className="count">{String(certs.length).padStart(2, '0')} CREDENTIALS</span>
+            </div>
+            <table className="certs-table table">
+              <thead>
+                <tr>
+                  <th style={{width:'14%'}}>Code</th>
+                  <th style={{width:'38%'}} className="name">Name</th>
+                  <th style={{width:'26%'}} className="iss">Issuer</th>
+                  <th style={{width:'10%'}}>Year</th>
+                  <th>Credential</th>
+                </tr>
+              </thead>
+              <tbody>
+                {certs.map((cert, idx) => (
+                  <tr key={idx}>
+                    <td className="code">{cert.name}</td>
+                    <td className="name">{cert.fullName}</td>
+                    <td className="iss">{cert.provider}</td>
+                    <td className="yr">{cert.year}</td>
+                    <td>
+                      <a href={cert.url} target="_blank" rel="noopener noreferrer" className="cred">
+                        Verify <ExtIcon />
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* EXPERTISE */}
+        <section className="block" id="expertise">
+          <div className="wrap">
+            <div className="sec-head">
+              <h2>Expertise</h2>
+              <span className="rule"></span>
+            </div>
+            <div className="skills">
+              {expertise.map((item, idx) => (
+                <div className="skill" key={idx}>
+                  <div className="skill-head">
+                    <div className="skill-icon"><item.Icon /></div>
+                    <h3>{item.title}</h3>
+                  </div>
+                  {item.lines.map((line, i) => <p key={i}>{line}</p>)}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TECHNOLOGIES */}
+        <section className="block" id="tools">
+          <div className="wrap">
+            <div className="sec-head">
+              <h2>Technologies &amp; Tools</h2>
+              <span className="rule"></span>
+            </div>
+            <div className="stack">
+              {Object.entries(tech).map(([category, tools], idx) => (
+                <div className="grp" key={idx}>
+                  <div className="label">{category}</div>
+                  <div className="chips">
+                    {tools.map((tool, i) => <span key={i}>{tool}</span>)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SPEAKING & RESEARCH */}
+        <section className="block">
+          <div className="wrap">
+            <div className="split">
+              {/* Speaking */}
+              <div>
+                <div className="sec-head">
+                  <h2>Speaking</h2>
+                  <span className="rule"></span>
+                </div>
+                {talks.slice(0, 4).map((talk, idx) => (
+                  <a href={talk.slides} target="_blank" rel="noopener noreferrer" className="talk" key={idx}>
+                    <div>
+                      <h3>{talk.title}</h3>
+                      <p>{talk.event} · {talk.date}</p>
                     </div>
-                    <p className="text-accent text-sm">{exp.company}</p>
-                    <p className="text-dark-faded text-xs">{exp.location}</p>
-                  </div>
-                  <div className="text-dark-faded text-xs font-mono whitespace-nowrap">
-                    {exp.period}
-                  </div>
-                </div>
-                <ul className="space-y-1">
-                  {exp.highlights.map((highlight, i) => (
-                    <li key={i} className="text-dark-muted text-xs flex items-start">
-                      <span className="text-dark-faded mr-2">•</span>
-                      {highlight}
-                    </li>
-                  ))}
-                </ul>
+                    <ExtIcon />
+                  </a>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Certifications */}
-      <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-lg font-semibold text-dark-text font-sans flex items-center gap-2">
-              <FaCertificate className="text-accent" size={14} /> Certifications
-            </h2>
-            <a
-              href="https://www.credly.com/users/adam-nurudini/badges"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:text-accent-600 text-xs flex items-center gap-1"
-            >
-              View all on Credly <FaExternalLinkAlt size={10} />
-            </a>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {siteMetadata.certifications.map((cert, idx) => (
-              <a
-                key={idx}
-                href={cert.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card card-interactive p-4 flex items-center gap-3 group"
-              >
-                <div className="w-10 h-10 bg-accent-glow border border-accent/30 rounded flex items-center justify-center text-accent font-bold text-xs font-mono group-hover:bg-accent/20 transition-colors">
-                  {cert.name.substring(0, 4)}
+              {/* Research */}
+              <div>
+                <div className="sec-head">
+                  <h2>Research</h2>
+                  <span className="rule"></span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-dark-text font-semibold text-sm group-hover:text-accent transition-colors">{cert.name}</h3>
-                    {cert.active && <span className="text-success text-xs">✓</span>}
-                    <FaExternalLinkAlt size={9} className="text-dark-faded opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <p className="text-dark-muted text-xs truncate">{cert.fullName}</p>
-                  <p className="text-dark-faded text-xs">{cert.provider} • {cert.year}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Technologies */}
-      <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-lg font-semibold text-dark-text mb-8 font-sans flex items-center gap-2">
-            <FaCode className="text-accent" size={14} /> Technologies & Tools
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {Object.entries(siteMetadata.technologies).map(([category, tools]) => (
-              <div key={category} className="card p-4">
-                <h3 className="text-xs font-semibold text-accent mb-3 uppercase tracking-wider">{category}</h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {tools.map((tool, idx) => (
-                    <span key={idx} className="tag text-[10px]">
-                      {tool}
-                    </span>
+                <p className="research-copy">
+                  I focus on finding real-world vulnerabilities in production software.
+                  My research has resulted in multiple CVE assignments and coordinated disclosures.
+                </p>
+                <div className="mini">
+                  {cves.slice(0, 3).map((cve, idx) => (
+                    <a href={`https://www.cve.org/CVERecord?id=${cve.id}`} target="_blank" rel="noopener noreferrer" key={idx}>
+                      <span className="id">{cve.id}</span>
+                      <span>{cve.product}</span>
+                      <span className={`sev ${cve.severity.toLowerCase()}`}>{cve.severity.toUpperCase()}</span>
+                    </a>
                   ))}
                 </div>
+                <Link href="/cves" className="more-link">
+                  <span>View all CVEs</span> <ArrowIcon />
+                </Link>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Speaking */}
-      <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-lg font-semibold text-dark-text mb-8 font-sans flex items-center gap-2">
-            <FaMicrophone className="text-accent" size={14} /> Speaking & Community
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {siteMetadata.speaking.map((event, idx) => (
-              <div key={idx} className="flex items-center text-dark-muted text-sm p-2">
-                <div className="w-1.5 h-1.5 bg-accent rounded-full mr-3" />
-                <span>{event}</span>
+        {/* CONTACT CTA */}
+        <section className="block" id="contact">
+          <div className="wrap">
+            <div className="cta-panel">
+              <div>
+                <div className="cmd accent">$ contact --init</div>
+                <h2>Let&apos;s work together</h2>
+                <p>Available for penetration testing engagements, security assessments, and consulting. Based in Melbourne, working globally.</p>
               </div>
-            ))}
+              <div className="ctas">
+                <a href={`mailto:${siteMetadata.email}`} className="btn">Get in Touch <ArrowIcon /></a>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* CVE CTA */}
-      <section className="py-12 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto">
-          <div className="card p-6 border-accent/20 bg-accent-glow/30">
-            <h2 className="text-lg font-semibold text-dark-text mb-2 font-sans">Security Research</h2>
-            <p className="text-dark-muted text-sm mb-4">
-              Published {siteMetadata.cves.length} CVEs including critical vulnerabilities in enterprise software.
-              Research focuses on web application security, API vulnerabilities, and network management systems.
-            </p>
-            <Link href="/cves" className="inline-flex items-center text-accent hover:text-accent-600 text-sm gap-1">
-              View CVE Research <FaArrowRight size={12} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
-      <section className="py-16 px-4 border-t border-dark-border-subtle">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-xl font-semibold text-dark-text mb-3 font-sans">Let's Connect</h2>
-          <p className="text-dark-muted text-sm mb-6 max-w-lg mx-auto">
-            Interested in security consulting, penetration testing, or vulnerability research collaboration?
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <a href={`mailto:${siteMetadata.email}`} className="btn btn-primary">
-              Get in Touch
-            </a>
-            <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-              LinkedIn
-            </a>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </>
   )
 }

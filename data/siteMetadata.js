@@ -45,7 +45,7 @@ const siteMetadata = {
       period: 'Aug 2023 - Present',
       type: 'offensive',
       highlights: [
-        'Developed Mobile Application Security Testing service offering',
+        'Subject Matter Expert and service maintainer for Mobile Application Security Testing',
         'Led multiple client engagements and security assessments',
         'Conducted AWS, Azure, and GCP cloud security audits',
         'Performed code reviews and secure code assessments',
@@ -223,7 +223,7 @@ const siteMetadata = {
       product: 'Snipe-IT',
       versions: 'before 8.7.0',
       severity: 'Critical',
-      cvss: '8.5',
+      cvss: '8.4',
       description: 'Arbitrary File Read and SSRF via Acceptance Note Markdown Injection'
     },
     {
@@ -232,7 +232,7 @@ const siteMetadata = {
       product: 'ClipBucket V5',
       versions: '5.5.1 - 5.5.3-#153',
       severity: 'Critical',
-      cvss: '9.8',
+      cvss: '9.2',
       description: 'OS Command Injection via Installer php_cli_filepath Parameter'
     },
     {
@@ -240,7 +240,7 @@ const siteMetadata = {
       title: 'rConfig Path Traversal',
       product: 'rConfig Core',
       versions: '8.0.0 - 8.2.13',
-      severity: 'Critical',
+      severity: 'High',
       cvss: '7.1',
       description: 'Arbitrary File Read via Export Download Endpoint'
     },
@@ -250,7 +250,7 @@ const siteMetadata = {
       product: 'rConfig Core',
       versions: '8.0.0 - 8.2.13',
       severity: 'Critical',
-      cvss: '10.0',
+      cvss: '9.3',
       description: 'Unauthenticated Admin Account Creation via Duplicate Auth Routes'
     }
   ],
