@@ -132,7 +132,7 @@ export default function About() {
                 <dt>CVEs</dt><dd>{cves.length} PUBLISHED</dd>
                 <dt>CERTS</dt><dd>{certs.length} ACTIVE</dd>
                 <dt>ROLES</dt><dd>{exp.length} POSITIONS</dd>
-                <dt>STATUS</dt><dd>AVAILABLE</dd>
+                <dt>STATUS</dt><dd>OPEN TO COLLABORATE</dd>
               </dl>
               <hr />
               <div className="cmd">$ cat highlights.txt</div>
