@@ -31,7 +31,7 @@ const siteMetadata = {
     highlights: [
       'Delivered advanced penetration testing and red team engagements across web, API, mobile, and cloud platforms',
       'Built and led full-scale SOC capability for a tier-1 bank, achieving zero data breaches',
-      'Launched Mobile App Security Testing service offering at Sekuro',
+      'Subject Matter Expert and service maintainer for Mobile Application Security Testing at Sekuro',
       'Drove ISO 27001 and PCIDSS certifications for financial institutions',
       'CVE Author with multiple critical vulnerability discoveries'
     ]
