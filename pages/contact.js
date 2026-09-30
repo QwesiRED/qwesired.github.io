@@ -1,6 +1,40 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
+// Multi-color Icons
+const PentestIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M12 2L4 5v6c0 5.5 3.4 10.3 8 12 4.6-1.7 8-6.5 8-12V5l-8-3z" fill="#1e40af"/>
+    <path d="M12 2L4 5v6c0 5.5 3.4 10.3 8 12V2z" fill="#3b82f6"/>
+    <path d="M9 12l2 2 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+const ReviewIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <circle cx="10" cy="10" r="7" fill="#7c3aed"/>
+    <circle cx="10" cy="10" r="4" fill="#a78bfa"/>
+    <path d="M15 15l5 5" stroke="#c084fc" strokeWidth="2.5" strokeLinecap="round"/>
+    <circle cx="10" cy="10" r="1.5" fill="#fff"/>
+  </svg>
+)
+
+const DisclosureIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M12 2L4 6v4l8 12 8-12V6l-8-4z" fill="#059669"/>
+    <path d="M12 2L4 6v4l8 12V2z" fill="#10b981"/>
+    <path d="M12 8v5M12 15v1" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+)
+
+const TrainingIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="#f59e0b"/>
+    <path d="M13 2L4 14h7l-1 8" fill="#fbbf24"/>
+    <path d="M10 14l3-4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+)
+
 export default function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -139,22 +173,22 @@ export default function Contact() {
             <div className="sec-head"><h2>What I Can Help With</h2><span className="rule"></span></div>
             <div className="help">
               <div className="hc">
-                <svg viewBox="0 0 16 16"><path d="M8 1.5 3 3.5v4c0 3.3 2.2 5.7 5 6.6 2.8-.9 5-3.3 5-6.6v-4L8 1.5Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="m5.7 8 1.6 1.6L10.5 6" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <div className="hc-icon"><PentestIcon /></div>
                 <h3>Penetration Testing</h3>
                 <p>Web, API, mobile, cloud and infrastructure — internal, external and red team.</p>
               </div>
               <div className="hc">
-                <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.8" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="m10.5 10.5 3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                <div className="hc-icon"><ReviewIcon /></div>
                 <h3>Security Reviews</h3>
                 <p>Code review, secure SDLC and cloud architecture hardening across AWS, Azure and GCP.</p>
               </div>
               <div className="hc">
-                <svg viewBox="0 0 16 16"><path d="M8 1.5 14 4.5v7L8 14.5 2 11.5v-7L8 1.5Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M8 5.5v5M5.5 7l2.5-1.5L10.5 7" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <div className="hc-icon"><DisclosureIcon /></div>
                 <h3>Vulnerability Disclosure</h3>
                 <p>Found an issue in something I research? Report it privately and I'll coordinate a fix.</p>
               </div>
               <div className="hc">
-                <svg viewBox="0 0 16 16"><path d="M9 1.5 3 9h4l-1 5.5L13 7H9l1-5.5Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>
+                <div className="hc-icon"><TrainingIcon /></div>
                 <h3>Talks &amp; Training</h3>
                 <p>Conference talks and hands-on workshops on offensive security and SecOps.</p>
               </div>

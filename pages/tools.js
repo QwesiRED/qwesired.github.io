@@ -18,20 +18,39 @@ const TerminalIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="m7 10 3 2.5L7 15M12.5 15.5H17"/></svg>
 )
 
+// Multi-color principle icons
 const TargetIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="currentColor"/></svg>
+  <svg viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="9" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="6" fill="none" stroke="#f59e0b" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="3" fill="none" stroke="#dc2626" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="1" fill="#dc2626"/>
+  </svg>
 )
 
 const CodeIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M8 6 2 12l6 6M16 6l6 6-6 6"/></svg>
+  <svg viewBox="0 0 24 24" fill="none">
+    <rect x="3" y="3" width="18" height="18" rx="2" fill="#1e293b"/>
+    <path d="M8 8l-3 4 3 4" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M16 8l3 4-3 4" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M14 6l-4 12" stroke="#ef4444" strokeWidth="1.8" strokeLinecap="round"/>
+  </svg>
 )
 
 const BoltIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="#f59e0b"/>
+    <path d="M13 2L4 14h7l-1 8" fill="#fbbf24"/>
+    <path d="M10 14l3-4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
 )
 
 const ShieldIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5 4 5.5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10v-6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M12 2L4 5v6c0 5.5 3.4 10.3 8 12 4.6-1.7 8-6.5 8-12V5l-8-3z" fill="#1e40af"/>
+    <path d="M12 2L4 5v6c0 5.5 3.4 10.3 8 12V2z" fill="#3b82f6"/>
+    <path d="M9 12l2 2 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
 )
 
 const principles = [
@@ -206,7 +225,7 @@ export default function Tools() {
             <div className="skills four">
               {principles.map((item, idx) => (
                 <div className="skill" key={idx}>
-                  <item.Icon />
+                  <div className="skill-icon"><item.Icon /></div>
                   <h3>{item.title}</h3>
                   {item.desc.split('\n').map((line, i) => <p key={i}>{line}</p>)}
                 </div>
