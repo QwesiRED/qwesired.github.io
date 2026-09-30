@@ -15,6 +15,18 @@ const MoonIcon = () => (
   </svg>
 )
 
+const MenuIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <path d="M4 6h16M4 12h16M4 18h16"/>
+  </svg>
+)
+
+const CloseIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <path d="M18 6L6 18M6 6l12 12"/>
+  </svg>
+)
+
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
 )
@@ -31,6 +43,7 @@ export default function Navbar() {
   const router = useRouter()
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -38,6 +51,15 @@ export default function Navbar() {
     setTheme(stored)
     document.documentElement.setAttribute('data-theme', stored)
   }, [])
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark'
@@ -61,25 +83,60 @@ export default function Navbar() {
     return router.pathname.startsWith(href.split('#')[0]) && href.split('#')[0] !== '/'
   }
 
+  const handleLinkClick = () => {
+    setMenuOpen(false)
+  }
+
   return (
-    <nav className="nav">
-      <div className="wrap">
-        <Link href="/" className="brand">
-          <img src="/images/icon-32.png" alt="" />
-          <span>Qwesi</span><b>RED</b>
-        </Link>
-        <div className="links">
+    <>
+      <nav className="nav">
+        <div className="wrap">
+          <Link href="/" className="brand">
+            <img src="/images/icon-32.png" alt="" />
+            <span>Qwesi</span><b>RED</b>
+          </Link>
+          <div className="links">
+            {navLinks.map((link, idx) => (
+              <Link
+                key={idx}
+                href={link.href}
+                className={isActive(link.href) ? 'active' : ''}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="social">
+            <a href={siteMetadata.github} target="_blank" rel="noopener noreferrer" title="GitHub"><GithubIcon /></a>
+            <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn"><LinkedinIcon /></a>
+            <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer" title="X"><XIcon /></a>
+            {mounted && (
+              <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+              </button>
+            )}
+          </div>
+          <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+            {menuOpen ? <CloseIcon /> : <MenuIcon />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-links">
           {navLinks.map((link, idx) => (
             <Link
               key={idx}
               href={link.href}
               className={isActive(link.href) ? 'active' : ''}
+              onClick={handleLinkClick}
             >
               {link.label}
             </Link>
           ))}
         </div>
-        <div className="social">
+        <div className="mobile-menu-social">
           <a href={siteMetadata.github} target="_blank" rel="noopener noreferrer" title="GitHub"><GithubIcon /></a>
           <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn"><LinkedinIcon /></a>
           <a href={siteMetadata.twitter} target="_blank" rel="noopener noreferrer" title="X"><XIcon /></a>
@@ -90,6 +147,9 @@ export default function Navbar() {
           )}
         </div>
       </div>
-    </nav>
+
+      {/* Backdrop */}
+      {menuOpen && <div className="mobile-menu-backdrop" onClick={() => setMenuOpen(false)} />}
+    </>
   )
 }

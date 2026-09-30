@@ -131,6 +131,22 @@ svg{display:block}
 .theme-toggle:hover{color:var(--accent);border-color:var(--accent)}
 .theme-toggle svg{width:16px;height:16px}
 
+/* Mobile menu button */
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:transparent;color:var(--text);cursor:pointer}
+.mobile-menu-btn svg{width:22px;height:22px}
+
+/* Mobile menu overlay */
+.mobile-menu{position:fixed;top:50px;left:0;right:0;bottom:0;background:var(--bg);z-index:40;display:flex;flex-direction:column;padding:24px 16px;transform:translateX(100%);transition:transform .25s ease;overflow-y:auto}
+.mobile-menu.open{transform:translateX(0)}
+.mobile-menu-links{display:flex;flex-direction:column;gap:0}
+.mobile-menu-links a{display:block;padding:16px 0;font-size:15px;font-weight:500;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--border);transition:color .2s}
+.mobile-menu-links a:hover,.mobile-menu-links a.active{color:var(--accent)}
+.mobile-menu-social{display:flex;gap:20px;padding-top:24px;margin-top:auto}
+.mobile-menu-social svg{width:22px;height:22px;color:var(--muted)}
+.mobile-menu-social a:hover svg{color:var(--accent)}
+.mobile-menu-social .theme-toggle{width:40px;height:40px}
+.mobile-menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:35;display:none}
+
 /* ---------- HERO ---------- */
 .hero{padding:44px 0 56px}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:56px;align-items:start}
@@ -266,6 +282,8 @@ footer.site-footer small{font-size:9px;color:var(--muted)}
   .eyebrow{white-space:normal}
   .skill{white-space:normal}
   .links,.nav .social{display:none}
+  .mobile-menu-btn{display:flex}
+  .mobile-menu-backdrop{display:block}
   h1.hero-title{font-size:29px}
   .stats{flex-wrap:wrap;row-gap:14px}
   .stat{padding:0 16px}
@@ -282,6 +300,17 @@ footer.site-footer small{font-size:9px;color:var(--muted)}
   .skill{padding:16px}
   .about .wrap{grid-template-columns:1fr}
   .certs{column-gap:20px}
+  /* Certs table mobile */
+  .certs-table thead{display:none}
+  .certs-table,.certs-table tbody,.certs-table tr{display:block}
+  .certs-table tr{display:grid;grid-template-columns:1fr;padding:14px 0;border-bottom:1px solid var(--border);gap:4px}
+  .certs-table td{border:0;padding:0}
+  .certs-table td.code{font-size:14px}
+  .certs-table td.name{font-size:12px;color:var(--text)}
+  .certs-table td.iss{font-size:11px}
+  .certs-table td.yr{font-size:11px;color:var(--muted)}
+  .certs-table td:last-child{margin-top:6px}
+  .certs-table .cred{font-size:11px}
   footer.site-footer .wrap{flex-direction:column;justify-content:center;gap:6px;height:auto;padding:18px 16px}
 }
 
