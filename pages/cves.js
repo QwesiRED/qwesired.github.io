@@ -38,22 +38,27 @@ export default function CVEs() {
   const cves = siteMetadata.cves
   const [search, setSearch] = useState('')
   const [sevFilter, setSevFilter] = useState('all')
+  const [writeupFilter, setWriteupFilter] = useState('all')
 
   const critCount = cves.filter(c => c.severity === 'Critical').length
   const highCount = cves.filter(c => c.severity === 'High').length
   const avgCvss = (cves.reduce((a, c) => a + parseFloat(c.cvss), 0) / cves.length).toFixed(1)
   const unauthCount = cves.filter(c => c.description?.toLowerCase().includes('unauth')).length
+  const writeupCount = cves.filter(c => c.writeup).length
 
   const filtered = useMemo(() => {
     return cves.filter(c => {
       const matchSev = sevFilter === 'all' || c.severity.toLowerCase() === sevFilter
+      const matchWriteup = writeupFilter === 'all' ||
+        (writeupFilter === 'published' && c.writeup) ||
+        (writeupFilter === 'pending' && !c.writeup)
       const matchSearch = !search ||
         c.id.toLowerCase().includes(search.toLowerCase()) ||
         c.product.toLowerCase().includes(search.toLowerCase()) ||
         c.title.toLowerCase().includes(search.toLowerCase())
-      return matchSev && matchSearch
+      return matchSev && matchWriteup && matchSearch
     })
-  }, [cves, search, sevFilter])
+  }, [cves, search, sevFilter, writeupFilter])
 
   return (
     <>
@@ -162,16 +167,33 @@ export default function CVEs() {
                 />
                 <kbd>/</kbd>
               </div>
-              <div className="chips" style={{display:'flex',gap:'6px'}}>
-                {['all', 'critical', 'high'].map(sev => (
-                  <button
-                    key={sev}
-                    className={`chip ${sevFilter === sev ? 'on' : ''}`}
-                    onClick={() => setSevFilter(sev)}
-                  >
-                    {sev.charAt(0).toUpperCase() + sev.slice(1)}
-                  </button>
-                ))}
+              <div className="filter-groups">
+                <div className="chips" style={{display:'flex',gap:'6px'}}>
+                  {['all', 'critical', 'high'].map(sev => (
+                    <button
+                      key={sev}
+                      className={`chip ${sevFilter === sev ? 'on' : ''}`}
+                      onClick={() => setSevFilter(sev)}
+                    >
+                      {sev.charAt(0).toUpperCase() + sev.slice(1)}
+                    </button>
+                  ))}
+                </div>
+                <div className="chips" style={{display:'flex',gap:'6px'}}>
+                  {[
+                    { key: 'all', label: 'All' },
+                    { key: 'published', label: `Writeups (${writeupCount})` },
+                    { key: 'pending', label: 'Pending' }
+                  ].map(opt => (
+                    <button
+                      key={opt.key}
+                      className={`chip ${writeupFilter === opt.key ? 'on' : ''}`}
+                      onClick={() => setWriteupFilter(opt.key)}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -198,16 +220,20 @@ export default function CVEs() {
                         <span className="prod">{cve.product}</span>
                         {isUnauth && <span className="flag">UNAUTHENTICATED</span>}
                       </div>
-                      <h3><Link href={`/blog/${cve.id.toLowerCase()}`}>{cve.title}</Link></h3>
+                      <h3>{cve.writeup ? <Link href={`/blog/${cve.writeup}`}>{cve.title}</Link> : cve.title}</h3>
                       <p>{cve.description}</p>
                       <div className="meta">
                         <span className="mi"><BoxIcon /> Affected {cve.versions}</span>
                       </div>
                     </div>
                     <div className="card-act">
-                      <Link href={`/blog/${cve.id.toLowerCase()}`} className="btn sm">
-                        Read writeup <ArrowIcon />
-                      </Link>
+                      {cve.writeup ? (
+                        <Link href={`/blog/${cve.writeup}`} className="btn sm">
+                          Read writeup <ArrowIcon />
+                        </Link>
+                      ) : (
+                        <span className="badge pending">Coming soon</span>
+                      )}
                       <a
                         className="ghost"
                         href={`https://www.cve.org/CVERecord?id=${cve.id}`}
@@ -226,7 +252,7 @@ export default function CVEs() {
               <div className="empty">
                 <div className="cmd">$ grep -i "{search}" cves.db</div>
                 <p>No CVEs match these filters.</p>
-                <button className="link-cta" onClick={() => { setSearch(''); setSevFilter('all'); }}>
+                <button className="link-cta" onClick={() => { setSearch(''); setSevFilter('all'); setWriteupFilter('all'); }}>
                   <span>Clear filters</span>
                 </button>
               </div>

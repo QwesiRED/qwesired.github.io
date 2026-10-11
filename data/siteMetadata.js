@@ -197,7 +197,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'Critical',
       cvss: '9.8',
-      description: 'Unauthenticated API access via static Internal API Key header bypass'
+      description: 'Unauthenticated API access via static Internal API Key header bypass',
+      writeup: null
     },
     {
       id: 'CVE-2026-82041',
@@ -206,7 +207,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'Critical',
       cvss: '9.8',
-      description: 'Remote Command Execution via Incident Response WebSocket endpoint'
+      description: 'Remote Command Execution via Incident Response WebSocket endpoint',
+      writeup: null
     },
     {
       id: 'CVE-2026-77915',
@@ -215,7 +217,8 @@ const siteMetadata = {
       versions: '8.0.0 - 8.2.13',
       severity: 'Critical',
       cvss: '9.3',
-      description: 'Unauthenticated Admin Account Creation via Duplicate Auth Routes'
+      description: 'Unauthenticated Admin Account Creation via Duplicate Auth Routes',
+      writeup: 'cve-2026-77915'
     },
     {
       id: 'CVE-2026-80138',
@@ -224,7 +227,8 @@ const siteMetadata = {
       versions: '5.5.1 - 5.5.3-#153',
       severity: 'Critical',
       cvss: '9.2',
-      description: 'OS Command Injection via Installer php_cli_filepath Parameter'
+      description: 'OS Command Injection via Installer php_cli_filepath Parameter',
+      writeup: 'cve-2026-80138'
     },
     {
       id: 'CVE-2026-77929',
@@ -233,7 +237,8 @@ const siteMetadata = {
       versions: '<= 5.5.3',
       severity: 'Critical',
       cvss: '8.8',
-      description: 'Arbitrary PHP File Upload to RCE via Extension/MIME Validation Mismatch'
+      description: 'Arbitrary PHP File Upload to RCE via Extension/MIME Validation Mismatch',
+      writeup: 'cve-2026-77929'
     },
     {
       id: 'CVE-2026-82039',
@@ -242,7 +247,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'High',
       cvss: '8.6',
-      description: 'Time-based Blind SQL Injection in Asset Groups Search endpoint'
+      description: 'Time-based Blind SQL Injection in Asset Groups Search endpoint',
+      writeup: 'cve-2026-82039'
     },
     {
       id: 'CVE-2026-86751',
@@ -251,7 +257,8 @@ const siteMetadata = {
       versions: 'before 8.7.0',
       severity: 'Critical',
       cvss: '8.4',
-      description: 'Arbitrary File Read and SSRF via Acceptance Note Markdown Injection'
+      description: 'Arbitrary File Read and SSRF via Acceptance Note Markdown Injection',
+      writeup: 'cve-2026-86751'
     },
     {
       id: 'CVE-2026-82040',
@@ -260,7 +267,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'High',
       cvss: '7.5',
-      description: 'Server-Side Request Forgery via Identity Provider metadata URL validation'
+      description: 'Server-Side Request Forgery via Identity Provider metadata URL validation',
+      writeup: null
     },
     {
       id: 'CVE-2026-82044',
@@ -269,7 +277,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'High',
       cvss: '7.5',
-      description: 'Server-Side Request Forgery via PDF generation endpoint URL parameter'
+      description: 'Server-Side Request Forgery via PDF generation endpoint URL parameter',
+      writeup: null
     },
     {
       id: 'CVE-2026-82045',
@@ -278,7 +287,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'High',
       cvss: '7.2',
-      description: 'JPQL Injection in Network Scan property search via String.format()'
+      description: 'JPQL Injection in Network Scan property search via String.format()',
+      writeup: null
     },
     {
       id: 'CVE-2026-77928',
@@ -287,7 +297,8 @@ const siteMetadata = {
       versions: '<= 5.5.3',
       severity: 'High',
       cvss: '7.1',
-      description: 'Blind SQL Injection in Private Message Deletion via Array Parameter Bypass'
+      description: 'Blind SQL Injection in Private Message Deletion via Array Parameter Bypass',
+      writeup: 'cve-2026-77928'
     },
     {
       id: 'CVE-2026-77927',
@@ -296,7 +307,8 @@ const siteMetadata = {
       versions: '<= 5.5.3',
       severity: 'High',
       cvss: '7.1',
-      description: 'Blind SQL Injection in Photo Deletion via Array Parameter Bypass'
+      description: 'Blind SQL Injection in Photo Deletion via Array Parameter Bypass',
+      writeup: 'cve-2026-77927'
     },
     {
       id: 'CVE-2026-77914',
@@ -305,7 +317,8 @@ const siteMetadata = {
       versions: '8.0.0 - 8.2.13',
       severity: 'High',
       cvss: '7.1',
-      description: 'Arbitrary File Read via Export Download Endpoint'
+      description: 'Arbitrary File Read via Export Download Endpoint',
+      writeup: 'cve-2026-77914'
     },
     {
       id: 'CVE-2026-82043',
@@ -314,7 +327,8 @@ const siteMetadata = {
       versions: 'v11.2.13',
       severity: 'Low',
       cvss: '3.7',
-      description: 'Account enumeration via differential password reset error responses'
+      description: 'Account enumeration via differential password reset error responses',
+      writeup: null
     }
   ],
 
