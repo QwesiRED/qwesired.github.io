@@ -191,6 +191,42 @@ const siteMetadata = {
 
   cves: [
     {
+      id: 'CVE-2026-82042',
+      title: 'UTMStack Authentication Bypass',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'Critical',
+      cvss: '9.8',
+      description: 'Unauthenticated API access via static Internal API Key header bypass'
+    },
+    {
+      id: 'CVE-2026-82041',
+      title: 'UTMStack WebSocket RCE',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'Critical',
+      cvss: '9.8',
+      description: 'Remote Command Execution via Incident Response WebSocket endpoint'
+    },
+    {
+      id: 'CVE-2026-77915',
+      title: 'rConfig Unauthorized Admin Registration',
+      product: 'rConfig Core',
+      versions: '8.0.0 - 8.2.13',
+      severity: 'Critical',
+      cvss: '9.3',
+      description: 'Unauthenticated Admin Account Creation via Duplicate Auth Routes'
+    },
+    {
+      id: 'CVE-2026-80138',
+      title: 'ClipBucket V5 OS Command Injection',
+      product: 'ClipBucket V5',
+      versions: '5.5.1 - 5.5.3-#153',
+      severity: 'Critical',
+      cvss: '9.2',
+      description: 'OS Command Injection via Installer php_cli_filepath Parameter'
+    },
+    {
       id: 'CVE-2026-77929',
       title: 'ClipBucket V5 File Upload RCE',
       product: 'ClipBucket V5',
@@ -198,6 +234,51 @@ const siteMetadata = {
       severity: 'Critical',
       cvss: '8.8',
       description: 'Arbitrary PHP File Upload to RCE via Extension/MIME Validation Mismatch'
+    },
+    {
+      id: 'CVE-2026-82039',
+      title: 'UTMStack SQL Injection',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'High',
+      cvss: '8.6',
+      description: 'Time-based Blind SQL Injection in Asset Groups Search endpoint'
+    },
+    {
+      id: 'CVE-2026-86751',
+      title: 'Snipe-IT SSRF & File Disclosure',
+      product: 'Snipe-IT',
+      versions: 'before 8.7.0',
+      severity: 'Critical',
+      cvss: '8.4',
+      description: 'Arbitrary File Read and SSRF via Acceptance Note Markdown Injection'
+    },
+    {
+      id: 'CVE-2026-82040',
+      title: 'UTMStack SSRF in IdP Config',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'High',
+      cvss: '7.5',
+      description: 'Server-Side Request Forgery via Identity Provider metadata URL validation'
+    },
+    {
+      id: 'CVE-2026-82044',
+      title: 'UTMStack SSRF in PDF Export',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'High',
+      cvss: '7.5',
+      description: 'Server-Side Request Forgery via PDF generation endpoint URL parameter'
+    },
+    {
+      id: 'CVE-2026-82045',
+      title: 'UTMStack JPQL Injection',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'High',
+      cvss: '7.2',
+      description: 'JPQL Injection in Network Scan property search via String.format()'
     },
     {
       id: 'CVE-2026-77928',
@@ -218,24 +299,6 @@ const siteMetadata = {
       description: 'Blind SQL Injection in Photo Deletion via Array Parameter Bypass'
     },
     {
-      id: 'CVE-2026-86751',
-      title: 'Snipe-IT SSRF & File Disclosure',
-      product: 'Snipe-IT',
-      versions: 'before 8.7.0',
-      severity: 'Critical',
-      cvss: '8.4',
-      description: 'Arbitrary File Read and SSRF via Acceptance Note Markdown Injection'
-    },
-    {
-      id: 'CVE-2026-80138',
-      title: 'ClipBucket V5 OS Command Injection',
-      product: 'ClipBucket V5',
-      versions: '5.5.1 - 5.5.3-#153',
-      severity: 'Critical',
-      cvss: '9.2',
-      description: 'OS Command Injection via Installer php_cli_filepath Parameter'
-    },
-    {
       id: 'CVE-2026-77914',
       title: 'rConfig Path Traversal',
       product: 'rConfig Core',
@@ -245,13 +308,13 @@ const siteMetadata = {
       description: 'Arbitrary File Read via Export Download Endpoint'
     },
     {
-      id: 'CVE-2026-77915',
-      title: 'rConfig Unauthorized Admin Registration',
-      product: 'rConfig Core',
-      versions: '8.0.0 - 8.2.13',
-      severity: 'Critical',
-      cvss: '9.3',
-      description: 'Unauthenticated Admin Account Creation via Duplicate Auth Routes'
+      id: 'CVE-2026-82043',
+      title: 'UTMStack Account Enumeration',
+      product: 'UTMStack',
+      versions: 'v11.2.13',
+      severity: 'Low',
+      cvss: '3.7',
+      description: 'Account enumeration via differential password reset error responses'
     }
   ],
 
