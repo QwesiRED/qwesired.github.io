@@ -5,9 +5,16 @@
     <link>https://qwesired.github.io</link>
     <description>Offensive Security Consultant | AppSec &amp; SecOps Leader</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Sep 2026 10:39:26 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 11 Oct 2026 05:57:26 GMT</lastBuildDate>
     <atom:link href="https://qwesired.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     
+    <item>
+      <title><![CDATA[CVE-2026-82039: SQL Injection in UTMStack Asset Groups Search]]></title>
+      <link>https://qwesired.github.io/blog/cve-2026-82039</link>
+      <guid>https://qwesired.github.io/blog/cve-2026-82039</guid>
+      <pubDate>Sun, 11 Oct 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A time-based blind SQL injection vulnerability in UTMStack allows authenticated users to execute arbitrary SQL queries against PostgreSQL, enabling full database compromise including credential extraction.]]></description>
+    </item>
     <item>
       <title><![CDATA[CVE-2026-77927: Blind SQL Injection in ClipBucket V5 Photo Deletion]]></title>
       <link>https://qwesired.github.io/blog/cve-2026-77927</link>
@@ -48,7 +55,7 @@
       <link>https://qwesired.github.io/blog/cve-2026-77915</link>
       <guid>https://qwesired.github.io/blog/cve-2026-77915</guid>
       <pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[A CVSS 10.0 vulnerability allowing complete unauthenticated takeover of rConfig instances through a misconfigured registration route.]]></description>
+      <description><![CDATA[A critical vulnerability allowing complete unauthenticated takeover of rConfig instances through a misconfigured registration route that grants Admin privileges.]]></description>
     </item>
     <item>
       <title><![CDATA[CVE-2026-77914: rConfig Core Path Traversal to Full Application Compromise]]></title>

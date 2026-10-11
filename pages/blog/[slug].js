@@ -118,6 +118,7 @@ const Ring = ({ value, sev }) => {
 export default function BlogPost({ post, prevPost, nextPost, toc }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [lightbox, setLightbox] = useState({ active: false, images: [], index: 0 })
   const shareUrl = `${siteMetadata.siteUrl}/blog/${post.slug}`
   const ogImage = post.image ? `${siteMetadata.siteUrl}${post.image}` : null
 
@@ -130,6 +131,50 @@ export default function BlogPost({ post, prevPost, nextPost, toc }) {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    const pocImages = document.querySelectorAll('figure.poc-image[data-lightbox]')
+    const imageData = Array.from(pocImages).map(fig => ({
+      src: fig.querySelector('img')?.src,
+      caption: fig.querySelector('figcaption')?.textContent || ''
+    }))
+
+    const handleImageClick = (e) => {
+      const fig = e.target.closest('figure.poc-image[data-lightbox]')
+      if (!fig) return
+      const idx = Array.from(pocImages).indexOf(fig)
+      if (idx !== -1) {
+        setLightbox({ active: true, images: imageData, index: idx })
+        document.body.style.overflow = 'hidden'
+      }
+    }
+
+    pocImages.forEach(fig => fig.addEventListener('click', handleImageClick))
+    return () => pocImages.forEach(fig => fig.removeEventListener('click', handleImageClick))
+  }, [post.contentHtml])
+
+  const closeLightbox = () => {
+    setLightbox(prev => ({ ...prev, active: false }))
+    document.body.style.overflow = ''
+  }
+
+  const navLightbox = (dir) => {
+    setLightbox(prev => ({
+      ...prev,
+      index: (prev.index + dir + prev.images.length) % prev.images.length
+    }))
+  }
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!lightbox.active) return
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') navLightbox(-1)
+      if (e.key === 'ArrowRight') navLightbox(1)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [lightbox.active])
 
   const fmtDate = (d) => {
     if (!d) return ''
@@ -324,6 +369,38 @@ export default function BlogPost({ post, prevPost, nextPost, toc }) {
           </Link>
         </div>
       </article>
+
+      {/* Lightbox */}
+      <div
+        className={`lightbox-overlay ${lightbox.active ? 'active' : ''}`}
+        onClick={(e) => e.target === e.currentTarget && closeLightbox()}
+      >
+        {lightbox.images[lightbox.index] && (
+          <>
+            <img
+              src={lightbox.images[lightbox.index].src}
+              alt={lightbox.images[lightbox.index].caption}
+            />
+            {lightbox.images[lightbox.index].caption && (
+              <div className="lightbox-caption">{lightbox.images[lightbox.index].caption}</div>
+            )}
+          </>
+        )}
+        <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">
+          <svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </button>
+        {lightbox.images.length > 1 && (
+          <>
+            <button className="lightbox-nav prev" onClick={() => navLightbox(-1)} aria-label="Previous">
+              <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <button className="lightbox-nav next" onClick={() => navLightbox(1)} aria-label="Next">
+              <svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <div className="lightbox-counter">{lightbox.index + 1} / {lightbox.images.length}</div>
+          </>
+        )}
+      </div>
     </>
   )
 }
