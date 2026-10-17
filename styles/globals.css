@@ -75,8 +75,8 @@
 :root[data-theme="light"] .term .term-name.dim{color:#94a3b8}
 :root[data-theme="light"] .term .term-readme{color:#94a3b8}
 :root[data-theme="light"] .term h2{color:#f1f5f9}
-:root[data-theme="light"] .term p{color:#94a3b8}
-:root[data-theme="light"] .term .f-meta{color:#64748b}
+:root[data-theme="light"] .term p{color:#e2e8f0}
+:root[data-theme="light"] .term .f-meta{color:#94a3b8}
 :root[data-theme="light"] .cjson{color:#e2e8f0}
 :root[data-theme="light"] .cjson .key{color:#7dd3fc}
 :root[data-theme="light"] .cjson .str{color:#2dd4bf}
