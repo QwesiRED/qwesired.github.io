@@ -100,23 +100,23 @@ export default function Tools() {
             </div>
             <div className="term-body">
               <div className="cmd">$ ls -la ./tools/</div>
-              <div style={{fontSize:'11px',lineHeight:'2'}}>
+              <div className="term-ls">
                 {tools.map((tool, idx) => (
-                  <div key={idx} style={{display:'grid',gridTemplateColumns:'96px 1fr auto',alignItems:'center'}}>
-                    <span style={{color:'var(--faded)'}}>drwxr-xr-x</span>
-                    <span style={{color:'var(--text)'}}>{tool.name}/</span>
+                  <div key={idx} className="term-ls-row">
+                    <span className="term-perm">drwxr-xr-x</span>
+                    <span className="term-name">{tool.name}/</span>
                     <span className="st ok">AVAILABLE</span>
                   </div>
                 ))}
-                <div style={{display:'grid',gridTemplateColumns:'96px 1fr auto',alignItems:'center'}}>
-                  <span style={{color:'var(--faded)'}}>drwx------</span>
-                  <span style={{color:'var(--muted)'}}>upcoming/</span>
+                <div className="term-ls-row">
+                  <span className="term-perm">drwx------</span>
+                  <span className="term-name dim">upcoming/</span>
                   <span className="st wip">IN DEV</span>
                 </div>
               </div>
               <hr />
               <div className="cmd">$ cat README.md | head -3</div>
-              <p style={{fontSize:'10.5px',color:'var(--muted)',lineHeight:'1.6',marginTop:'8px'}}>
+              <p className="term-readme">
                 Security tools built from real penetration testing<br/>
                 engagements. Designed for operators who need<br/>
                 reliable, field-tested utilities.
