@@ -117,8 +117,8 @@ export default function Home({ recentPosts }) {
         <div className="wrap">
           <div>
             <div className="eyebrow">OFFENSIVE SECURITY<i>/</i>VULNERABILITY RESEARCH<i>/</i>APPSEC &amp; SECOPS</div>
-            <h1 className="hero-title">I find <em>vulnerabilities</em><br/>in the software<br/>organizations depend on.</h1>
-            <p className="lede">Security researcher and offensive security consultant focused on real-world impact — from discovering vulnerabilities to helping organisations build stronger defences.</p>
+            <h1 className="hero-title">Simulating the <em>ultimate adversary</em><br/>to build unshakeable<br/>enterprise security.</h1>
+            <p className="lede">Bridging deep offensive vulnerability discovery with real-world experience building and leading tier-1 bank SOCs.</p>
             <div className="stats">
               <div className="stat"><strong>{cves.length}</strong><small>CVEs Discovered</small></div>
               <div className="stat"><strong>10+</strong><small>Years Experience</small></div>
