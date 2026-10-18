@@ -5,9 +5,16 @@
     <link>https://qwesired.github.io</link>
     <description>Offensive Security Consultant | AppSec &amp; SecOps Leader</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 17 Oct 2026 22:55:56 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 18 Oct 2026 10:34:51 GMT</lastBuildDate>
     <atom:link href="https://qwesired.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     
+    <item>
+      <title><![CDATA[REA: The Complete Guide to AI-Powered Reverse Engineering]]></title>
+      <link>https://qwesired.github.io/blog/rea-llm-reverse-engineering-guide</link>
+      <guid>https://qwesired.github.io/blog/rea-llm-reverse-engineering-guide</guid>
+      <pubDate>Sun, 18 Oct 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A deep dive into REA (Reverse Engineer Anything) — the viral open-source toolkit that bridges AI coding agents with binary analysis engines like Ghidra and Hopper.]]></description>
+    </item>
     <item>
       <title><![CDATA[CVE-2026-82039: SQL Injection in UTMStack Asset Groups Search]]></title>
       <link>https://qwesired.github.io/blog/cve-2026-82039</link>
