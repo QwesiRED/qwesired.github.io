@@ -6,10 +6,10 @@ import { getSortedPostsData } from '../lib/posts'
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
 
-  // Filter research posts (CVE writeups, research, guides)
-  const researchPosts = allPostsData.filter(p =>
+  // Filter CVE writeups only
+  const cvePosts = allPostsData.filter(p =>
     p.slug?.includes('cve') ||
-    p.tags?.some(t => ['cve', 'research', 'guide', 'vulnerability'].some(k => t.toLowerCase().includes(k)))
+    p.tags?.some(t => t.toLowerCase().includes('cve'))
   )
 
   // Filter blog posts (blogpost, CTF, data breach, career)
@@ -19,7 +19,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      recentPosts: researchPosts.slice(0, 4),
+      recentPosts: cvePosts.slice(0, 4),
       recentBlogPosts: blogPosts.slice(0, 4),
       totalPosts: allPostsData.length
     }
@@ -235,13 +235,13 @@ export default function Home({ recentPosts, recentBlogPosts }) {
           </div>
         </section>
 
-        {/* LATEST RESEARCH */}
+        {/* LATEST CVE WRITEUPS */}
         <section className="block">
           <div className="wrap">
             <div className="sec-head">
-              <h2>Latest Research</h2>
+              <h2>Latest CVE Writeups</h2>
               <span className="rule"></span>
-              <Link href="/blog" className="more"><span>View all articles</span><ArrowIcon /></Link>
+              <Link href="/cves" className="more"><span>View all CVEs</span><ArrowIcon /></Link>
             </div>
             <div className="posts">
               {recentPosts.length > 0 ? recentPosts.map(post => (
@@ -257,7 +257,7 @@ export default function Home({ recentPosts, recentBlogPosts }) {
                   <ArrowIcon />
                 </Link>
               )) : (
-                <p style={{color:'var(--muted)',padding:'20px 0'}}>Research articles coming soon.</p>
+                <p style={{color:'var(--muted)',padding:'20px 0'}}>CVE writeups coming soon.</p>
               )}
             </div>
           </div>
