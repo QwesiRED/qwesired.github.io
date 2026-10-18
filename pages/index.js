@@ -5,9 +5,22 @@ import { getSortedPostsData } from '../lib/posts'
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
+
+  // Filter research posts (CVE writeups, research, guides)
+  const researchPosts = allPostsData.filter(p =>
+    p.slug?.includes('cve') ||
+    p.tags?.some(t => ['cve', 'research', 'guide', 'vulnerability'].some(k => t.toLowerCase().includes(k)))
+  )
+
+  // Filter blog posts (blogpost, CTF, data breach, career)
+  const blogPosts = allPostsData.filter(p =>
+    p.tags?.some(t => ['blogpost', 'blog', 'ctf', 'breach', 'career'].some(k => t.toLowerCase().includes(k)))
+  )
+
   return {
     props: {
-      recentPosts: allPostsData.slice(0, 4),
+      recentPosts: researchPosts.slice(0, 4),
+      recentBlogPosts: blogPosts.slice(0, 4),
       totalPosts: allPostsData.length
     }
   }
@@ -101,7 +114,7 @@ const expertise = [
   { Icon: SecOpsIcon, title: 'SECURITY OPERATIONS', lines: ['SIEM, XDR, PAM, and NTA deployment', 'Building and leading SOC capabilities'] },
 ]
 
-export default function Home({ recentPosts }) {
+export default function Home({ recentPosts, recentBlogPosts }) {
   const cves = siteMetadata.cves
   const certs = siteMetadata.certifications
 
@@ -245,6 +258,37 @@ export default function Home({ recentPosts }) {
                 </Link>
               )) : (
                 <p style={{color:'var(--muted)',padding:'20px 0'}}>Research articles coming soon.</p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* RECENT BLOGPOSTS */}
+        <section className="blogposts-section">
+          <div className="wrap">
+            <div className="sec-head">
+              <h2>Recent BlogPosts</h2>
+              <span className="rule"></span>
+              <Link href="/blog" className="more"><span>View all posts</span><ArrowIcon /></Link>
+            </div>
+            <div className="blogposts-grid">
+              {recentBlogPosts.length > 0 ? recentBlogPosts.map(post => (
+                <Link href={`/blog/${post.slug}`} key={post.slug} className="blogpost-card">
+                  <span className="bp-cat">
+                    {post.tags?.find(t => ['ctf', 'career', 'breach'].some(k => t.toLowerCase().includes(k)))?.toUpperCase() || 'BLOG'}
+                  </span>
+                  <h3>{post.title}</h3>
+                  <p>{post.description || post.summary || 'Read this blog post to learn more.'}</p>
+                  <div className="bp-foot">
+                    <div className="bp-meta">
+                      <span>{new Date(post.date).toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}).toUpperCase()}</span>
+                      {post.readTime && <><ClockIcon /> {post.readTime} min</>}
+                    </div>
+                    <ArrowIcon className="bp-arrow" />
+                  </div>
+                </Link>
+              )) : (
+                <div className="blogposts-empty">Blog posts coming soon. Stay tuned for insights on AI, CTFs, and more.</div>
               )}
             </div>
           </div>

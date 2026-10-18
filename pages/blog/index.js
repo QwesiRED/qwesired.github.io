@@ -48,6 +48,10 @@ const CATS = [
   { k: 'cve', label: 'CVE Writeups' },
   { k: 'research', label: 'Research' },
   { k: 'guide', label: 'Guides' },
+  { k: 'blogpost', label: 'Blogpost' },
+  { k: 'ctf', label: 'CTF Writeups' },
+  { k: 'breach', label: 'Data Breaches' },
+  { k: 'career', label: 'Career Guide' },
 ]
 
 export default function Blog({ posts, tags }) {
@@ -72,7 +76,11 @@ export default function Blog({ posts, tags }) {
       const matchCat = category === 'all' ||
         (category === 'cve' && (p.slug?.includes('cve') || p.tags?.some(t => t.toLowerCase().includes('cve')))) ||
         (category === 'research' && p.tags?.some(t => t.toLowerCase().includes('research'))) ||
-        (category === 'guide' && p.tags?.some(t => t.toLowerCase().includes('guide')))
+        (category === 'guide' && p.tags?.some(t => t.toLowerCase().includes('guide'))) ||
+        (category === 'blogpost' && p.tags?.some(t => t.toLowerCase().includes('blogpost') || t.toLowerCase().includes('blog'))) ||
+        (category === 'ctf' && p.tags?.some(t => t.toLowerCase().includes('ctf'))) ||
+        (category === 'breach' && p.tags?.some(t => t.toLowerCase().includes('breach') || t.toLowerCase().includes('data breach'))) ||
+        (category === 'career' && p.tags?.some(t => t.toLowerCase().includes('career')))
 
       const matchTag = !selectedTag || p.tags?.includes(selectedTag)
 
