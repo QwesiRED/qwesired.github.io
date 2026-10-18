@@ -4,7 +4,7 @@ date: '2026-10-18'
 tags: ['blogpost', 'AI', 'Reverse Engineering', 'Claude', 'Codex', 'LLM', 'Security Research', 'Tools']
 description: 'A deep dive into REA (Reverse Engineer Anything) — the viral open-source toolkit that bridges AI coding agents with binary analysis engines like Ghidra and Hopper.'
 image: '/images/posts/rea-llm-guide.svg'
-readTime: 12
+readTime: 15
 ---
 
 <div class="callout tldr">
@@ -28,6 +28,14 @@ Reverse engineering has always been a manual, time-consuming craft. Security res
 </div>
 
 **REA (Reverse Engineer Anything)** changes the game by acting as an intelligent bridge between AI coding agents and industry-standard analysis engines like **Ghidra**, **Hopper**, and **IDA Pro**.
+
+<div class="callout info">
+  <div class="co-icon">📦</div>
+  <div>
+    <b>GitHub Repository</b>
+    <p><a href="https://github.com/morluto/rea" target="_blank" rel="noopener noreferrer">github.com/morluto/rea</a> — The official REA MCP server and CLI toolkit.</p>
+  </div>
+</div>
 
 ---
 
@@ -232,6 +240,7 @@ While REA ships with a robust 207-tool MCP server, some developers encounter con
 | **Execution** | Proxied middleware calls | Direct shell (`rg`, `otool`, `strings`) |
 | **Token Overhead** | Higher (loads full schemas) | Minimal |
 | **Best For** | Deep native binary decomposition | Fast script/source analysis |
+| **Repository** | [morluto/rea](https://github.com/morluto/rea) | [a16z/lean-rea](https://github.com/a16z/lean-rea) |
 
 </div>
 
@@ -241,6 +250,79 @@ Install the lean variant:
   <figcaption><span class="lang">bash</span><span class="fname">Terminal</span></figcaption>
   <pre><code>npx skills add a16z/lean-rea</code></pre>
 </figure>
+
+---
+
+## Practical Example: Analyzing an Electron App
+
+Let's walk through a real example of using REA to analyze **Slack's desktop app** and understand how it handles deep links.
+
+### Step 1: Point REA at the Target
+
+<figure class="code">
+  <figcaption><span class="lang">bash</span><span class="fname">Terminal — Start Claude Code with REA</span></figcaption>
+  <pre><code># Navigate to the Slack app bundle
+cd /Applications/Slack.app/Contents/Resources
+
+# Start Claude Code (REA is already configured via rea setup)
+claude</code></pre>
+</figure>
+
+### Step 2: Ask the Agent to Investigate
+
+Now you can have a natural conversation with Claude Code about the app:
+
+<figure class="code">
+  <figcaption><span class="lang">text</span><span class="fname">Claude Code Conversation</span></figcaption>
+  <pre><code><span class="c"># Your prompt to Claude Code:</span>
+> How does Slack handle slack:// deep links? Trace the flow from 
+> URL click to the actual channel navigation.
+
+<span class="c"># Claude Code will use REA tools to:</span>
+<span class="k">1.</span> Scan the app.asar for protocol handlers
+<span class="k">2.</span> Find the deep link registration in package.json
+<span class="k">3.</span> Trace the IPC channel from main → renderer
+<span class="k">4.</span> Identify the router that parses slack:// URLs
+<span class="k">5.</span> Return evidence-backed findings with code snippets</code></pre>
+</figure>
+
+### Step 3: Review the Evidence
+
+REA returns structured evidence you can verify:
+
+<figure class="code">
+  <figcaption><span class="lang">json</span><span class="fname">REA Evidence Output</span></figcaption>
+  <pre><code>{
+  <span class="key">"evidence_id"</span>: <span class="str">"ev2_a8f3c2d1"</span>,
+  <span class="key">"sha256"</span>: <span class="str">"9f86d08..."</span>,
+  <span class="key">"finding"</span>: {
+    <span class="key">"file"</span>: <span class="str">"dist/main.bundle.js"</span>,
+    <span class="key">"function"</span>: <span class="str">"handleDeepLink"</span>,
+    <span class="key">"line"</span>: <span class="n">4521</span>,
+    <span class="key">"snippet"</span>: <span class="str">"protocol.registerHttpProtocol('slack', (req) => {...})"</span>
+  }
+}</code></pre>
+</figure>
+
+### Step 4: Generate Replacement Code
+
+Once you understand the mechanism, ask the agent to write code for your own app:
+
+<figure class="code">
+  <figcaption><span class="lang">text</span><span class="fname">Claude Code Conversation</span></figcaption>
+  <pre><code>> Based on what you found, write a deep link handler for my 
+> Electron app that handles myapp:// URLs and routes to React views.
+
+<span class="c"># Claude Code generates working code based on the traced logic</span></code></pre>
+</figure>
+
+<div class="callout success">
+  <div class="co-icon">✅</div>
+  <div>
+    <b>The Power of REA</b>
+    <p>In minutes, you went from "how does Slack do this?" to working code for your own app — all with verifiable evidence and no guesswork.</p>
+  </div>
+</div>
 
 ---
 
