@@ -19,8 +19,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      recentPosts: cvePosts.slice(0, 4),
-      recentBlogPosts: blogPosts.slice(0, 4),
+      recentPosts: cvePosts.slice(0, 5),
+      recentBlogPosts: blogPosts.slice(0, 5),
       totalPosts: allPostsData.length
     }
   }
